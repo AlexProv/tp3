@@ -11,6 +11,7 @@ public class GestionLigueBaseball
 public Connexion cx;
 public Equipe equipe;
 public Terrain terrain;
+public Arbitre arbitre;
 public GestionEquipe gestionEquipe;
 public GestionJoueur gestionJoueur;
 public GestionArbitre gestionArbitre;
@@ -33,7 +34,10 @@ public GestionLigueBaseball(String serveur, String bd, String user, String passw
 cx = new Connexion(serveur, bd, user, password);
 equipe = new Equipe(cx);
 terrain = new Terrain(cx);
+arbitre = new Arbitre(cx);
 gestionEquipe = new GestionEquipe(equipe, terrain);
+gestionArbitre = new GestionArbitre(arbitre);
+
 }
 
 public void fermer()
