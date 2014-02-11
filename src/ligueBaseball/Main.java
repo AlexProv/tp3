@@ -110,6 +110,9 @@ public class Main {
 			if(tokenizer.countTokens() == 2)
 				gestionLigue.gestionJoueur.supprimerJoueur(readString(tokenizer), readString(tokenizer));
 		}
+		else if("creerArbitre".startsWith(commande)){
+			gestionLigue.gestionArbitre.ajout(readString(tokenizer), readString(tokenizer));
+		}
 		else if("--".startsWith(commande)){
 			//Ligne de commentaire, ne rien faire et passer a la prochaine ligne
 		}

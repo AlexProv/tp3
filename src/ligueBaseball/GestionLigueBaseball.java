@@ -13,6 +13,7 @@ public Equipe equipe;
 public Terrain terrain;
 public GestionEquipe gestionEquipe;
 public GestionJoueur gestionJoueur;
+public GestionArbitre gestionArbitre;
 
 /**
   * Ouvre une connexion avec la BD relationnelle et
