@@ -12,6 +12,7 @@ public class Joueur {
 	private PreparedStatement stmtSelectJoueurEquipeParam;
 	private PreparedStatement stmtSelectJoueurEquipe;
 	private PreparedStatement stmtMaxId;
+	private PreparedStatement stmtGetId;
 	private Connexion cx;
 	
 	public Joueur(Connexion cx) throws  SQLException
@@ -30,8 +31,22 @@ public class Joueur {
 			    ("select j.joueurid, j.joueurnom, j.joueurprenom, e.equipenom from faitpartie f, equipe e, joueur j where f.equipeid=e.equipeid and f.joueurid = j.joueurid");
 		stmtExist = cx.getConnection().prepareStatement
 			    ("Select * from joueur where joueurnom = ? and joueurprenom = ?");
+		stmtGetId = cx.getConnection().prepareStatement
+			    ("Select joueurid from joueur where joueurnom = ? and joueurprenom = ?");
 	}
 	
+	public int getId(String nom,String prenom) throws SQLException
+	{
+		stmtGetId.setString(0,nom);
+		stmtGetId.setString(1,prenom);
+		ResultSet rset = stmtGetId.executeQuery();
+		int id = 0;
+		if(rset.next())
+		{
+			id = rset.getInt(0);
+		}
+		return id;
+	}
 	public boolean existe(String nom, String prenom) throws SQLException
 	{
 		stmtExist.setString(0, nom);
