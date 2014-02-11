@@ -10,14 +10,8 @@ public class GestionLigueBaseball
 {
 public Connexion cx;
 public Equipe equipe;
-public Membre membre;
-public Reservation reservation;
 public Terrain terrain;
 public GestionEquipe gestionEquipe;
-public GestionMembre gestionMembre;
-public GestionPret gestionPret;
-public GestionReservation gestionReservation;
-public GestionInterrogation gestionInterrogation;
 public GestionJoueur gestionJoueur;
 
 /**
