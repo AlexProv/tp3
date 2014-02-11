@@ -78,10 +78,12 @@ public class Main {
 			afficherAide();
 		}
 		else if("afficherEquipes".startsWith(commande)){
-			gestionLigue.gestionEquipe.getEquipes();
+			if(tokenizer.countTokens() == 0)
+				gestionLigue.gestionEquipe.getEquipes();
 		}
 		else if("supprimerEquipe".startsWith(commande)){
-			gestionLigue.gestionEquipe.supprimer(readString(tokenizer));
+			if(tokenizer.countTokens() == 1)
+				gestionLigue.gestionEquipe.supprimer(readString(tokenizer));
 		}
 		else if("creerEquipe".startsWith(commande)){
 			if(tokenizer.countTokens() == 2){
@@ -89,6 +91,24 @@ public class Main {
 			} else if(tokenizer.countTokens() == 3){
 				gestionLigue.gestionEquipe.ajout(readString(tokenizer), readString(tokenizer), readString(tokenizer));
 			}
+		}
+		else if("creerJoueur".startsWith(commande)){
+			if(tokenizer.countTokens() == 2)
+				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer));
+			else if(tokenizer.countTokens() == 4)
+				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer), readString(tokenizer), readInt(tokenizer));
+			else if(tokenizer.countTokens() == 5)
+				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer), readString(tokenizer), readInt(tokenizer), readDate(tokenizer));
+		}
+		else if("afficherJoueursEquipe".startsWith(commande)){
+			if(tokenizer.countTokens() == 0)
+				gestionLigue.gestionJoueur.afficherJoueurEquipe();
+			else if(tokenizer.countTokens() == 1)
+				gestionLigue.gestionJoueur.afficherJoueurEquipe(readString(tokenizer));
+		}
+		else if("supprimerJoueur".startsWith(commande)){
+			if(tokenizer.countTokens() == 2)
+				gestionLigue.gestionJoueur.supprimerJoueur(readString(tokenizer), readString(tokenizer));
 		}
 		else if("--".startsWith(commande)){
 			//Ligne de commentaire, ne rien faire et passer a la prochaine ligne
@@ -110,6 +130,9 @@ public class Main {
 		System.out.println("  creerEquipe <EquipeNom> [<NomTterrain> AdresseTerrain]");
 		System.out.println("  afficherEquipes");
 		System.out.println("  supprimerEquipe <EquipeNom>");
+		System.out.println("  creerJoueur <JoueurNom> <JoueurPrenom> [<EquipeNom> <Numero> [<DateDebut>]]");
+		System.out.println("  afficherJoueursEquipe [<EquipeNom >]");
+		System.out.println("  supprimerJoueur <JoueurNom> <JoueurPrenom>");
 	}
 	
 

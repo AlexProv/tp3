@@ -18,6 +18,7 @@ public GestionMembre gestionMembre;
 public GestionPret gestionPret;
 public GestionReservation gestionReservation;
 public GestionInterrogation gestionInterrogation;
+public GestionJoueur gestionJoueur;
 
 /**
   * Ouvre une connexion avec la BD relationnelle et
