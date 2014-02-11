@@ -8,6 +8,13 @@ package ligueBaseball;
 
 public class TupleEquipe {
 
-  public int equipeid;
-  public String equipenom;
+	
+	int equipeid;
+	String equipenom;
+  
+	public TupleEquipe(int equipeId, String equipenom)
+	{
+		this.equipeid = equipeId;
+		this.equipenom = equipenom;
+	}
 }
