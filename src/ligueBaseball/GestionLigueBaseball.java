@@ -12,6 +12,7 @@ public Connexion cx;
 public Equipe equipe;
 public Terrain terrain;
 public Arbitre arbitre;
+public Joueur joueur;
 public GestionEquipe gestionEquipe;
 public GestionJoueur gestionJoueur;
 public GestionArbitre gestionArbitre;
@@ -35,8 +36,10 @@ cx = new Connexion(serveur, bd, user, password);
 equipe = new Equipe(cx);
 terrain = new Terrain(cx);
 arbitre = new Arbitre(cx);
+joueur = new Joueur(cx);
 gestionEquipe = new GestionEquipe(equipe, terrain);
 gestionArbitre = new GestionArbitre(arbitre);
+gestionJoueur = new GestionJoueur(cx, joueur);
 
 }
 
