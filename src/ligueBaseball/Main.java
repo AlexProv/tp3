@@ -92,26 +92,29 @@ public class Main {
 				gestionLigue.gestionEquipe.ajout(readString(tokenizer), readString(tokenizer), readString(tokenizer));
 			}
 		}
-		else if("creerJoueur".startsWith(commande)){
-			if(tokenizer.countTokens() == 2)
-				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer));
-			else if(tokenizer.countTokens() == 4)
-				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer), readString(tokenizer), readInt(tokenizer));
-			else if(tokenizer.countTokens() == 5)
-				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer), readString(tokenizer), readInt(tokenizer), readDate(tokenizer));
-		}
-		else if("afficherJoueursEquipe".startsWith(commande)){
-			if(tokenizer.countTokens() == 0)
-				gestionLigue.gestionJoueur.afficherJoueurEquipe();
-			else if(tokenizer.countTokens() == 1)
-				gestionLigue.gestionJoueur.afficherJoueurEquipe(readString(tokenizer));
-		}
-		else if("supprimerJoueur".startsWith(commande)){
-			if(tokenizer.countTokens() == 2)
-				gestionLigue.gestionJoueur.supprimerJoueur(readString(tokenizer), readString(tokenizer));
-		}
+//		else if("creerJoueur".startsWith(commande)){
+//			if(tokenizer.countTokens() == 2)
+//				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer));
+//			else if(tokenizer.countTokens() == 4)
+//				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer), readString(tokenizer), readInt(tokenizer));
+//			else if(tokenizer.countTokens() == 5)
+//				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer), readString(tokenizer), readInt(tokenizer), readDate(tokenizer));
+//		}
+//		else if("afficherJoueursEquipe".startsWith(commande)){
+//			if(tokenizer.countTokens() == 0)
+//				gestionLigue.gestionJoueur.afficherJoueurEquipe();
+//			else if(tokenizer.countTokens() == 1)
+//				gestionLigue.gestionJoueur.afficherJoueurEquipe(readString(tokenizer));
+//		}
+//		else if("supprimerJoueur".startsWith(commande)){
+//			if(tokenizer.countTokens() == 2)
+//				gestionLigue.gestionJoueur.supprimerJoueur(readString(tokenizer), readString(tokenizer));
+//		}
 		else if("creerArbitre".startsWith(commande)){
 			gestionLigue.gestionArbitre.ajout(readString(tokenizer), readString(tokenizer));
+		}
+		else if("afficherArbitre".startsWith(commande)){
+			gestionLigue.gestionArbitre.getArbitre();
 		}
 		else if("--".startsWith(commande)){
 			//Ligne de commentaire, ne rien faire et passer a la prochaine ligne

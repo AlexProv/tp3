@@ -3,6 +3,8 @@ package ligueBaseball;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Arbitre {
@@ -27,8 +29,8 @@ public class Arbitre {
 		      "values (?,?,?)");
 //		stmtDelete = cx.getConnection().prepareStatement
 //		    ("delete from equipe where equipenom = ?");
-//		stmtSelectAll = cx.getConnection().prepareStatement
-//			("select equipeid, equipenom from equipe order by equipenom");
+		stmtSelectAll = cx.getConnection().prepareStatement
+			("select arbitreNom, arbitrePrenom from arbitre order by arbitreNom");
 //		stmtExisteJoueur = cx.getConnection().prepareStatement
 //			("select faitpartie.equipeid from faitpartie, equipe where "
 //					+ "faitpartie.equipeid = equipe.equipeid and equipe.equipenom = ?");
@@ -57,6 +59,17 @@ public class Arbitre {
 		}
 		rset.close();
 		return arbitreId;
+	}
+
+	public List<TupleArbitre> getArbitre() throws SQLException {
+	    List<TupleArbitre> listArbitres = new ArrayList<TupleArbitre>();
+		ResultSet rset = stmtSelectAll.executeQuery();
+		while (rset.next()) {
+			TupleArbitre tupleArbitre = new TupleArbitre(rset.getString(1), rset.getString(2));
+			listArbitres.add(tupleArbitre);
+		}
+		rset.close();
+		return listArbitres;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package ligueBaseball;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class GestionArbitre {
 
@@ -29,7 +30,16 @@ public class GestionArbitre {
         
         }
 
-	
+	public void getArbitre(){
+	try {
+		List<TupleArbitre> listArbitres = arbitre.getArbitre();
+		for (TupleArbitre tupleArbitre : listArbitres) {
+			System.out.println(tupleArbitre.arbitreNom + ", " + tupleArbitre.arbitrePrenom);
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+}
 	
 	
 }
