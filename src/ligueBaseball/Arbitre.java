@@ -10,11 +10,10 @@ import java.util.List;
 public class Arbitre {
 
 
-	private PreparedStatement stmtExiste;
 	private PreparedStatement stmtInsert;
 	private PreparedStatement stmtDelete;
 	private PreparedStatement stmtSelectAll;
-	private PreparedStatement stmtExisteJoueur;
+	private PreparedStatement stmtExisteArbitre;
 	private PreparedStatement stmtMaxId;
 	private Connexion cx;
 	
@@ -22,8 +21,6 @@ public class Arbitre {
 	
 	public Arbitre(Connexion cx) throws SQLException{
 		this.cx = cx;
-//		stmtExiste = cx.getConnection().prepareStatement
-//			    ("select  from equipe where equipenom = ?");
 		stmtInsert = cx.getConnection().prepareStatement
 		    ("insert into arbitre (arbitreId, arbitreNom, arbitrePrenom) " +
 		      "values (?,?,?)");
@@ -31,9 +28,8 @@ public class Arbitre {
 //		    ("delete from equipe where equipenom = ?");
 		stmtSelectAll = cx.getConnection().prepareStatement
 			("select arbitreNom, arbitrePrenom from arbitre order by arbitreNom");
-//		stmtExisteJoueur = cx.getConnection().prepareStatement
-//			("select faitpartie.equipeid from faitpartie, equipe where "
-//					+ "faitpartie.equipeid = equipe.equipeid and equipe.equipenom = ?");
+		stmtExisteArbitre= cx.getConnection().prepareStatement
+			("select arbitreID from arbitre where arbitreNom= ? and arbitrePrenom = ?");
 		stmtMaxId = cx.getConnection().prepareStatement
 			("select max(arbitreid) from arbitre");
 
@@ -70,6 +66,12 @@ public class Arbitre {
 		}
 		rset.close();
 		return listArbitres;
+	}
+
+	public boolean existe(String nom, String prenom) throws SQLException {
+	    stmtExisteArbitre.setString(1, nom);
+	    stmtExisteArbitre.setString(2, prenom);
+	    return stmtExisteArbitre.execute();
 	}
 	
 }

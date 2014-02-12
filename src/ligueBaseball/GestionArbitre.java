@@ -16,8 +16,8 @@ public class GestionArbitre {
 	
 	public void ajout(String nom, String prenom)throws SQLException, LigueBaseballException, Exception{
         try {
-           //if (arbitre.existe())
-           //    throw new LigueBaseballException("Equipe existe deja: " + equipeNom);
+           if (arbitre.existe(nom, prenom))
+               throw new LigueBaseballException("Arbitre existe deja: " + arbitre);
            arbitre.ajoutArbitre(nom, prenom);
            cx.commit();
            }
