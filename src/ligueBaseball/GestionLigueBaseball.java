@@ -39,7 +39,7 @@ arbitre = new Arbitre(cx);
 joueur = new Joueur(cx);
 gestionEquipe = new GestionEquipe(equipe, terrain);
 gestionArbitre = new GestionArbitre(arbitre);
-gestionJoueur = new GestionJoueur(cx, joueur);
+gestionJoueur = new GestionJoueur(joueur);
 
 }
 

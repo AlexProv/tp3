@@ -11,7 +11,6 @@ public class Arbitre {
 
 
 	private PreparedStatement stmtInsert;
-	private PreparedStatement stmtDelete;
 	private PreparedStatement stmtSelectAll;
 	private PreparedStatement stmtExisteArbitre;
 	private PreparedStatement stmtMaxId;
@@ -71,7 +70,10 @@ public class Arbitre {
 	public boolean existe(String nom, String prenom) throws SQLException {
 	    stmtExisteArbitre.setString(1, nom);
 	    stmtExisteArbitre.setString(2, prenom);
-	    return stmtExisteArbitre.execute();
+	    ResultSet rset = stmtExisteArbitre.executeQuery();
+		boolean arbitreExiste = rset.next();
+		rset.close();
+		return arbitreExiste;
 	}
 	
 }

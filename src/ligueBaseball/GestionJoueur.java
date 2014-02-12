@@ -7,8 +7,8 @@ public class GestionJoueur {
 	private Joueur joueur;
 	private Connexion cx;
 
-	public GestionJoueur(Connexion cx, Joueur joueur) {
-		this.cx = cx;
+	public GestionJoueur(Joueur joueur) {
+		this.cx = joueur.getConnexion();
 		this.joueur = joueur;
 	}
 

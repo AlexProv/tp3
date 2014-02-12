@@ -103,5 +103,8 @@ public class Joueur {
 			stmtDelete.setInt(0,joueurId);
 			return stmtDelete.executeUpdate();
 			}
+	public Connexion getConnexion(){
+		return cx;
+	}
 
 }
