@@ -27,15 +27,14 @@ this.terrain = terrain;
  * Ajout d'une nouvelle equipe dans la base de donnees.
  * S'il existe deja, une exception est levee.
  */
-public void ajout(String equipeNom, String nomTerrain)
+public void ajout(String equipeNom)
  throws SQLException, LigueBaseballException, Exception
 {
 try {
    if (equipe.existe(equipeNom))
        throw new LigueBaseballException("Equipe existe deja: " + equipeNom);
    int equipeId = equipe.maxJoueur();
-   int terrainId = terrain.getTerrain(nomTerrain);
-   equipe.ajoutEquipe(equipeId, terrainId, equipeNom);
+   equipe.ajoutEquipe(equipeId, equipeNom);
    cx.commit();
    }
 catch (Exception e)
@@ -74,7 +73,7 @@ catch (Exception e)
 }
 
 /**
-  * Vente d'un livre.
+  * Supprimer une equipe.
   */
 public void supprimer(String equipeNom)
   throws SQLException, LigueBaseballException, Exception
@@ -99,6 +98,9 @@ catch (Exception e)
     }
 }
 
+/**
+ * 
+ */
 public void getEquipes(){
 	try {
 		List<TupleEquipe> listEquipes = equipe.getEquipes();

@@ -8,6 +8,7 @@ public class Equipe {
 
 	private PreparedStatement stmtExiste;
 	private PreparedStatement stmtInsert;
+	private PreparedStatement stmtInsertTerrain;
 	private PreparedStatement stmtDelete;
 	private PreparedStatement stmtSelectAll;
 	private PreparedStatement stmtExisteJoueur;
@@ -22,16 +23,19 @@ public class Equipe {
 
 		this.cx = cx;
 		stmtExiste = cx.getConnection().prepareStatement(
-						"select equipeid, terrainid, equipenom from equipe where equipenom = ?");
-		stmtInsert = cx.getConnection().prepareStatement(
+						"select * from equipe where equipenom = ?");
+		stmtInsertTerrain = cx.getConnection().prepareStatement(
 				"insert into equipe (equipeid, terrainid, equipenom) "
 						+ "values (?,?,?)");
+		stmtInsert = cx.getConnection().prepareStatement(
+				"insert into equipe (equipeid, equipenom) "
+						+ "values (?,?)");
 		stmtDelete = cx.getConnection().prepareStatement(
 				"delete from equipe where equipenom = ?");
 		stmtSelectAll = cx.getConnection().prepareStatement(
 				"select equipeid, equipenom from equipe order by equipenom");
 		stmtExisteJoueur = cx.getConnection()
-				.prepareStatement("select faitpartie.equipeid from faitpartie, equipe where "
+				.prepareStatement("select distinct faitpartie.equipeid from faitpartie, equipe where "
 						+ "faitpartie.equipeid = equipe.equipeid and equipe.equipenom = ?");
 		stmtMaxId = cx.getConnection().prepareStatement(
 				"select max(equipeid) from equipe");
@@ -48,9 +52,18 @@ public class Equipe {
 	 * Verifie si une equipe existe.
 	 */
 	public boolean existe(String equipeNom) throws SQLException {
+		stmtExiste.setString(1,equipeNom);
+		ResultSet rset = stmtExiste.executeQuery();
+		boolean equipeExiste = rset.next();
+		rset.close();
+		return equipeExiste;
 
-		stmtExiste.setString(1, equipeNom);
-		return stmtExiste.execute();
+	}
+	
+	public void ajoutEquipe(int equipeId, String equipeNom) throws SQLException{
+		stmtInsert.setInt(1, equipeId);
+		stmtInsert.setString(2, equipeNom);
+		stmtInsert.executeUpdate();
 	}
 
 	/**
@@ -58,17 +71,16 @@ public class Equipe {
 	 */
 	public void ajoutEquipe(int equipeId, int terrainId, String equipeNom)
 			throws SQLException {
-		stmtInsert.setInt(1, equipeId);
-		stmtInsert.setInt(2, terrainId);
-		stmtInsert.setString(3, equipeNom);
-		stmtInsert.executeUpdate();
+		stmtInsertTerrain.setInt(1, equipeId);
+		stmtInsertTerrain.setInt(2, terrainId);
+		stmtInsertTerrain.setString(3, equipeNom);
+		stmtInsertTerrain.executeUpdate();
 	}
 
 	/**
 	 * Suppression d'une equipe.
 	 */
 	public int suppressionEquipe(String equipeNom) throws SQLException {
-		/* Suppression du livre. */
 		stmtDelete.setString(1, equipeNom);
 		return stmtDelete.executeUpdate();
 	}
