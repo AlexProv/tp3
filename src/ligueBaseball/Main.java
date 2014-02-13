@@ -113,7 +113,7 @@ public class Main {
 		else if("creerArbitre".startsWith(commande)){
 			gestionLigue.gestionArbitre.ajout(readString(tokenizer), readString(tokenizer));
 		}
-		else if("afficherArbitre".startsWith(commande)){
+		else if("afficherArbitres".startsWith(commande)){
 			gestionLigue.gestionArbitre.getArbitre();
 		}
 		else if("--".startsWith(commande)){
@@ -132,13 +132,15 @@ public class Main {
 		System.out.println("");
 		System.out.println("Les transactions sont:");
 		System.out.println("  aide");
-		System.out.println("  exit");
 		System.out.println("  creerEquipe <EquipeNom> [<NomTterrain> AdresseTerrain]");
 		System.out.println("  afficherEquipes");
 		System.out.println("  supprimerEquipe <EquipeNom>");
 		System.out.println("  creerJoueur <JoueurNom> <JoueurPrenom> [<EquipeNom> <Numero> [<DateDebut>]]");
 		System.out.println("  afficherJoueursEquipe [<EquipeNom >]");
 		System.out.println("  supprimerJoueur <JoueurNom> <JoueurPrenom>");
+		System.out.println("  creerArbitre <ArbitreNom> <ArbitrePrenom>");
+		System.out.println("  afficherArbitres");
+		System.out.println("  exit");
 	}
 	
 

@@ -23,8 +23,6 @@ public class Arbitre {
 		stmtInsert = cx.getConnection().prepareStatement
 		    ("insert into arbitre (arbitreId, arbitreNom, arbitrePrenom) " +
 		      "values (?,?,?)");
-//		stmtDelete = cx.getConnection().prepareStatement
-//		    ("delete from equipe where equipenom = ?");
 		stmtSelectAll = cx.getConnection().prepareStatement
 			("select arbitreNom, arbitrePrenom from arbitre order by arbitreNom");
 		stmtExisteArbitre= cx.getConnection().prepareStatement
