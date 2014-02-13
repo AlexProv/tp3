@@ -97,23 +97,26 @@ public class Main {
 				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer));
 			else if(tokenizer.countTokens() == 4)
 				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer), readString(tokenizer), readInt(tokenizer));
-//			else if(tokenizer.countTokens() == 5)
-//				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer), readString(tokenizer), readInt(tokenizer), readDate(tokenizer));
+			else if(tokenizer.countTokens() == 5)
+				gestionLigue.gestionJoueur.ajout(readString(tokenizer), readString(tokenizer), readString(tokenizer), readInt(tokenizer), readDate(tokenizer));
 		}
-//		else if("afficherJoueursEquipe".startsWith(commande)){
-//			if(tokenizer.countTokens() == 0)
-//				gestionLigue.gestionJoueur.afficherJoueurEquipe();
-//			else if(tokenizer.countTokens() == 1)
-//				gestionLigue.gestionJoueur.afficherJoueurEquipe(readString(tokenizer));
-//		}
-//		else if("supprimerJoueur".startsWith(commande)){
-//			if(tokenizer.countTokens() == 2)
-//				gestionLigue.gestionJoueur.supprimerJoueur(readString(tokenizer), readString(tokenizer));
-//		}
+		else if("afficherJoueursEquipe".startsWith(commande)){
+			if(tokenizer.countTokens() == 0)
+				gestionLigue.gestionJoueur.afficherJoueurEquipe();
+			else if(tokenizer.countTokens() == 1)
+				gestionLigue.gestionJoueur.afficherJoueurEquipe(readString(tokenizer));
+		}
+		else if("supprimerJoueur".startsWith(commande)){
+			if(tokenizer.countTokens() == 2)
+				gestionLigue.gestionJoueur.supprimerJoueur(readString(tokenizer), readString(tokenizer));
+		}
 		else if("creerArbitre".startsWith(commande)){
 			gestionLigue.gestionArbitre.ajout(readString(tokenizer), readString(tokenizer));
 		}
 		else if("afficherArbitres".startsWith(commande)){
+			gestionLigue.gestionArbitre.getArbitre();
+		}
+		else if("arbitrerMatch".startsWith(commande)){
 			gestionLigue.gestionArbitre.getArbitre();
 		}
 		else if("--".startsWith(commande)){
@@ -140,6 +143,7 @@ public class Main {
 		System.out.println("  supprimerJoueur <JoueurNom> <JoueurPrenom>");
 		System.out.println("  creerArbitre <ArbitreNom> <ArbitrePrenom>");
 		System.out.println("  afficherArbitres");
+		System.out.println("  arbitrerMatch <MatchDate> <MatchHeure> <EquipeNomLocal> <EquipeNomVisiteur> <ArbitreNom> <ArbitrePrenom>");
 		System.out.println("  exit");
 	}
 	
@@ -166,7 +170,7 @@ public class Main {
 		if (tokenizer.hasMoreElements())
 			return tokenizer.nextToken();
 		else
-			throw new LigueBaseballException("autre parametre attendu");
+			throw new LigueBaseballException("Un String est attendu");
 	}
 
 	/**
@@ -182,41 +186,25 @@ public class Main {
 						+ token + "\"");
 			}
 		} else
-			throw new LigueBaseballException("autre parametre attendu");
-	}
-
-	/**
-	 * lecture d'un long java de la transaction entree a l'ecran
-	 */
-	static long readLong(StringTokenizer tokenizer) throws LigueBaseballException {
-		if (tokenizer.hasMoreElements()) {
-			String token = tokenizer.nextToken();
-			try {
-				return Long.valueOf(token).longValue();
-			} catch (NumberFormatException e) {
-				throw new LigueBaseballException("Nombre attendu a la place de \""
-						+ token + "\"");
-			}
-		} else
-			throw new LigueBaseballException("autre parametre attendu");
+			throw new LigueBaseballException("Un nombre est attendu.");
 	}
 
 	/**
 	 * lecture d'une date en format YYYY-MM-DD
 	 */
-	static java.util.Date readDate(StringTokenizer tokenizer)
+	static java.sql.Date readDate(StringTokenizer tokenizer)
 			throws LigueBaseballException {
 		if (tokenizer.hasMoreElements()) {
 			String token = tokenizer.nextToken();
 			try {
-				return FormatDate.convertirDate(token);
+				return new java.sql.Date(FormatDate.convertirDate(token).getTime());
 			} catch (ParseException e) {
 				throw new LigueBaseballException(
 						"Date en format YYYY-MM-DD attendue a la place  de \""
 								+ token + "\"");
 			}
 		} else
-			throw new LigueBaseballException("autre parametre attendu");
+			throw new LigueBaseballException("Une date est attendu");
 	}
 
 }

@@ -13,9 +13,11 @@ public Equipe equipe;
 public Terrain terrain;
 public Arbitre arbitre;
 public Joueur joueur;
+public Match match;
 public GestionEquipe gestionEquipe;
 public GestionJoueur gestionJoueur;
 public GestionArbitre gestionArbitre;
+public GestionMatch gestionMatch;
 
 /**
   * Ouvre une connexion avec la BD relationnelle et
@@ -33,12 +35,15 @@ public GestionLigueBaseball(String serveur, String bd, String user, String passw
 {
 // allocation des objets pour le traitement des transactions
 cx = new Connexion(serveur, bd, user, password);
+
 equipe = new Equipe(cx);
 terrain = new Terrain(cx);
 arbitre = new Arbitre(cx);
 joueur = new Joueur(cx);
+match = new Match(cx);
+
 gestionEquipe = new GestionEquipe(equipe, terrain);
-gestionArbitre = new GestionArbitre(arbitre);
+gestionArbitre = new GestionArbitre(arbitre, match);
 gestionJoueur = new GestionJoueur(joueur);
 
 }
