@@ -17,7 +17,6 @@ public class Joueur {
 	private PreparedStatement stmtMaxId;
 	private PreparedStatement stmtGetId;
 	private PreparedStatement stmtGetEquipeId;
-	private PreparedStatement stmtEquipeExiste;
 	private PreparedStatement stmtNumeroExiste;
 	
 	private Connexion cx;
@@ -40,31 +39,29 @@ public class Joueur {
 			    ("Select * from joueur where joueurnom = ? and joueurprenom = ?");
 		stmtGetId = cx.getConnection().prepareStatement
 			    ("Select joueurid from joueur where joueurnom = ? and joueurprenom = ?");
-		stmtEquipeExiste = cx.getConnection().prepareStatement
-			    ("Select * from equipe where equipenom = ?");
 		stmtNumeroExiste = cx.getConnection().prepareStatement
-			    ("Select * from equipe e, faitpartie f, joueur j where equipenom = ? and e.numero = ? and j.joueurid=f.joueurid and f.equipeid = e.equipeid");
-		stmtGetEquipeId =  cx.getConnection().prepareStatement("select equipeid from equipe where equipenom= ?");
+			    ("Select * from equipe e, faitpartie f, joueur j where equipenom = ? and f.numero = ? and j.joueurid=f.joueurid and f.equipeid = e.equipeid");
+		stmtGetEquipeId =  cx.getConnection().prepareStatement("select equipe.equipeid from equipe where equipe.equipenom= ?");
 		stmtSelectJoueur = cx.getConnection().prepareStatement("select joueurnom, joueur.joueurprenom,equipe.equipenom from joueur left join faitpartie on faitpartie.joueurid = joueur.joueurid left join equipe on equipe.equipeid = faitpartie.equipeid");
 		
 	}
 	
 	public int getId(String nom,String prenom) throws SQLException
 	{
-		stmtGetId.setString(0,nom);
-		stmtGetId.setString(1,prenom);
+		stmtGetId.setString(1,nom);
+		stmtGetId.setString(2,prenom);
 		ResultSet rset = stmtGetId.executeQuery();
 		int id = 0;
 		if(rset.next())
 		{
-			id = rset.getInt(0);
+			id = rset.getInt(1);
 		}
 		return id;
 	}
 	public boolean existe(String nom, String prenom) throws SQLException
 	{
-		stmtExist.setString(0, nom);
-		stmtExist.setString(1, prenom);
+		stmtExist.setString(1, nom);
+		stmtExist.setString(2, prenom);
 		return stmtExist.executeQuery().next();
 	}
 	
@@ -73,73 +70,66 @@ public class Joueur {
 	{
 		int maxJoueurId = getMaxJoueurId();
 		
-		stmtInsert.setInt(0, maxJoueurId);
-		stmtInsert.setString(1, joueurNom);
-		stmtInsert.setString(2, joueurPrenom);
+		stmtInsert.setInt(1, maxJoueurId);
+		stmtInsert.setString(2, joueurNom);
+		stmtInsert.setString(3, joueurPrenom);
 		
 		stmtInsert.executeUpdate();
 	}
 	
-	public void ajoutJoueur(String joueurNom, String joueurPrenom, int numero, String equipe) throws SQLException, LigueBaseballException
+	public void ajoutJoueur(String joueurNom, String joueurPrenom, int numero, String nomEquipe) throws SQLException, LigueBaseballException
 	{
-		stmtGetEquipeId.setString(0, equipe);
+		stmtGetEquipeId.setString(1, nomEquipe);
 		ResultSet rset = stmtGetEquipeId.executeQuery();
 		int equipeId = 0;
 		if(rset.next())
 		{
-			equipeId = rset.getInt(0);
+			equipeId = rset.getInt(1);
 		}
 		int joueurId = getMaxJoueurId();
 		
-		stmtInsertWithEquipe.setInt(joueurId, 0);
-		stmtInsertWithEquipe.setInt(equipeId, 1);
-		stmtInsertWithEquipe.setInt(numero, 2);
+		ajoutJoueur(joueurNom, joueurPrenom);
+		
+		stmtInsertWithEquipe.setInt(1, joueurId);
+		stmtInsertWithEquipe.setInt(2, equipeId);
+		stmtInsertWithEquipe.setInt(3, numero);
 		
 		java.util.Date today = new java.util.Date();
 		Date sqlDate = new Date(today.getTime());
-		stmtInsertWithEquipe.setDate(3, sqlDate);
-		
-		ajoutJoueur(joueurNom, joueurPrenom);
+		stmtInsertWithEquipe.setDate(4, sqlDate);
 	}
 	
-	public void ajoutJoueur(String joueurNom, String joueurPrenom, int numero, String equipe, Date dateDebut) throws SQLException, LigueBaseballException
+	public void ajoutJoueur(String joueurNom, String joueurPrenom, int numero, String nomEquipe, Date dateDebut) throws SQLException, LigueBaseballException
 	{
-		stmtGetEquipeId.setString(0, equipe);
+		stmtGetEquipeId.setString(1, nomEquipe);
 		ResultSet rset = stmtGetEquipeId.executeQuery();
-		int equipeId = 0;
+		int equipeId;
 		if(rset.next())
 		{
 			equipeId = rset.getInt(0);
 		}
+		else{
+			throw new LigueBaseballException("Equipe inexistante");
+		}
 		int joueurId = getMaxJoueurId();
 		
-		stmtInsertWithEquipe.setInt(joueurId, 0);
-		stmtInsertWithEquipe.setInt(equipeId, 1);
-		stmtInsertWithEquipe.setInt(numero, 2);
+		stmtInsertWithEquipe.setInt(1, joueurId);
+		stmtInsertWithEquipe.setInt(2, equipeId);
+		stmtInsertWithEquipe.setInt(3, numero);
 		
-		stmtInsertWithEquipe.setDate(3, dateDebut);
+		stmtInsertWithEquipe.setDate(4, dateDebut);
 		
 		ajoutJoueur(joueurNom, joueurPrenom);
 	}
 
 	public boolean numeroExiste(String equipe, int numero) throws SQLException
 	{
-		stmtNumeroExiste.setString(0, equipe);
-		stmtNumeroExiste.setInt(1, numero);
+		stmtNumeroExiste.setString(1, equipe);
+		stmtNumeroExiste.setInt(2, numero);
 		if(!stmtNumeroExiste.executeQuery().next()){
 			//throw new LigueBaseballException("Numero deja utiliser!");
 			return true;
 		}	
-		return false;
-	}
-	
-	public boolean equipeExiste(String equipe) throws SQLException
-	{
-		stmtEquipeExiste.setString(0, equipe);
-		if(!stmtEquipeExiste.executeQuery().next()){
-			//throw new LigueBaseballException("Equipe inexistante!");
-			return true;
-		}
 		return false;
 	}
 	
@@ -164,12 +154,12 @@ public class Joueur {
 		}
 		else
 		{
-			stmtSelectJoueurEquipeParam.setInt(0, equipeId);
+			stmtSelectJoueurEquipeParam.setInt(1, equipeId);
 			rset = stmtSelectJoueurEquipeParam.executeQuery();
 		}
 		while(rset.next())
 		{
-			TupleJoueur tj = new TupleJoueur(rset.getInt(0),rset.getString(1),rset.getString(2),rset.getString(3));
+			TupleJoueur tj = new TupleJoueur(rset.getInt(1),rset.getString(2),rset.getString(3),rset.getString(4));
 			lt.add(tj);
 		}
 		return lt;
@@ -183,7 +173,7 @@ public class Joueur {
 	public int suppressionJoueur(int joueurId)
 			 throws SQLException
 			{
-			stmtDelete.setInt(0,joueurId);
+			stmtDelete.setInt(1,joueurId);
 			return stmtDelete.executeUpdate();
 			}
 	public Connexion getConnexion(){

@@ -11,7 +11,7 @@ public class Equipe {
 	private PreparedStatement stmtInsertTerrain;
 	private PreparedStatement stmtDelete;
 	private PreparedStatement stmtSelectAll;
-	private PreparedStatement stmtExisteJoueur;
+	private PreparedStatement stmtExisteJoueurEquipe;
 	private PreparedStatement stmtMaxId;
 	private Connexion cx;
 
@@ -34,7 +34,7 @@ public class Equipe {
 				"delete from equipe where equipenom = ?");
 		stmtSelectAll = cx.getConnection().prepareStatement(
 				"select equipeid, equipenom from equipe order by equipenom");
-		stmtExisteJoueur = cx.getConnection()
+		stmtExisteJoueurEquipe = cx.getConnection()
 				.prepareStatement("select distinct faitpartie.equipeid from faitpartie, equipe where "
 						+ "faitpartie.equipeid = equipe.equipeid and equipe.equipenom = ?");
 		stmtMaxId = cx.getConnection().prepareStatement(
@@ -51,12 +51,15 @@ public class Equipe {
 	/**
 	 * Verifie si une equipe existe.
 	 */
-	public boolean existe(String equipeNom) throws SQLException {
+	public int existe(String equipeNom) throws SQLException {
+		int equipeId = -1;
 		stmtExiste.setString(1,equipeNom);
 		ResultSet rset = stmtExiste.executeQuery();
-		boolean equipeExiste = rset.next();
+		if(rset.next()){
+			equipeId = rset.getInt(1);
+		}
 		rset.close();
-		return equipeExiste;
+		return equipeId;
 
 	}
 	
@@ -102,8 +105,11 @@ public class Equipe {
 	}
 
 	public boolean existeJoueurs(String equipeNom) throws SQLException {
-		stmtExisteJoueur.setString(1, equipeNom);
-		return stmtExisteJoueur.execute();
+		stmtExisteJoueurEquipe.setString(1, equipeNom);
+		ResultSet rset = stmtExisteJoueurEquipe.executeQuery();
+		boolean existe = rset.next();
+		rset.close();
+		return existe;
 	}
 
 	public int maxJoueur() throws SQLException {

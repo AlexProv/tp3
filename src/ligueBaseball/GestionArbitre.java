@@ -18,7 +18,7 @@ public class GestionArbitre {
 	public void ajout(String nom, String prenom) throws SQLException,
 			LigueBaseballException, Exception {
 		try {
-			if (arbitre.existe(nom, prenom))
+			if (arbitre.existe(nom, prenom) != -1)
 				throw new LigueBaseballException("Arbitre existe deja: "
 						+ prenom + " " + nom);
 			arbitre.ajoutArbitre(nom, prenom);
@@ -46,7 +46,8 @@ public class GestionArbitre {
 	public void arbitrerMatch(java.sql.Date matchDate, String matchHeure, String equipeNomLocal, 
 			String equipeNomVisiteur, String arbitreNom, String arbitrePrenom) throws LigueBaseballException {
 		try {
-			if(!arbitre.existe(arbitreNom, arbitrePrenom))
+			int arbitreId = arbitre.existe(arbitreNom, arbitrePrenom);
+			if(arbitreId == -1)
 				throw new LigueBaseballException("Arbitre n'existe pas : "
 						+ arbitrePrenom + " " + arbitreNom);
 			else{

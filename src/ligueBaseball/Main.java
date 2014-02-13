@@ -102,13 +102,13 @@ public class Main {
 		}
 		else if("afficherJoueursEquipe".startsWith(commande)){
 			if(tokenizer.countTokens() == 0)
-				gestionLigue.gestionJoueur.afficherJoueurEquipe();
+				gestionLigue.gestionJoueur.getJoueur();
 			else if(tokenizer.countTokens() == 1)
-				gestionLigue.gestionJoueur.afficherJoueurEquipe(readString(tokenizer));
+				gestionLigue.gestionJoueur.getJoueur(readString(tokenizer));
 		}
 		else if("supprimerJoueur".startsWith(commande)){
 			if(tokenizer.countTokens() == 2)
-				gestionLigue.gestionJoueur.supprimerJoueur(readString(tokenizer), readString(tokenizer));
+				gestionLigue.gestionJoueur.supprimer(readString(tokenizer), readString(tokenizer));
 		}
 		else if("creerArbitre".startsWith(commande)){
 			gestionLigue.gestionArbitre.ajout(readString(tokenizer), readString(tokenizer));

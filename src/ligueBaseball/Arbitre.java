@@ -10,17 +10,18 @@ import java.util.List;
 public class Arbitre {
 
 
-	private PreparedStatement stmtInsert;
+	private PreparedStatement stmtInsertArbitre;
 	private PreparedStatement stmtSelectAll;
 	private PreparedStatement stmtExisteArbitre;
 	private PreparedStatement stmtMaxId;
+	private PreparedStatement stmtInsertArbitreMatch;
 	private Connexion cx;
 	
 	
 	
 	public Arbitre(Connexion cx) throws SQLException{
 		this.cx = cx;
-		stmtInsert = cx.getConnection().prepareStatement
+		stmtInsertArbitre = cx.getConnection().prepareStatement
 		    ("insert into arbitre (arbitreId, arbitreNom, arbitrePrenom) " +
 		      "values (?,?,?)");
 		stmtSelectAll = cx.getConnection().prepareStatement
@@ -38,10 +39,10 @@ public class Arbitre {
 	
 	public void ajoutArbitre(String arbitreNom,String arbitrePrenom)throws SQLException{
 		int id = maxArbitre();
-	    	stmtInsert.setInt(1, id);
-	    	stmtInsert.setString(2,arbitreNom);
-		stmtInsert.setString(3,arbitrePrenom);
-		stmtInsert.executeUpdate();
+	    	stmtInsertArbitre.setInt(1, id);
+	    	stmtInsertArbitre.setString(2,arbitreNom);
+		stmtInsertArbitre.setString(3,arbitrePrenom);
+		stmtInsertArbitre.executeUpdate();
 	}
 	
 	private int maxArbitre() throws SQLException{
@@ -65,13 +66,20 @@ public class Arbitre {
 		return listArbitres;
 	}
 
-	public boolean existe(String nom, String prenom) throws SQLException {
+	public int existe(String nom, String prenom) throws SQLException {
+		int arbitreId = -1;
 	    stmtExisteArbitre.setString(1, nom);
 	    stmtExisteArbitre.setString(2, prenom);
 	    ResultSet rset = stmtExisteArbitre.executeQuery();
-		boolean arbitreExiste = rset.next();
+		if(rset.next()){
+			arbitreId = rset.getInt(1);
+		}
 		rset.close();
-		return arbitreExiste;
+		return arbitreId;
+	}
+	
+	public void assignerArbitreMatch(int arbitreId, int matchId){
+		
 	}
 	
 }

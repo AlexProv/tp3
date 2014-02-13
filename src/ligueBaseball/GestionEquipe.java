@@ -31,7 +31,7 @@ public class GestionEquipe {
 	public void ajout(String equipeNom) throws SQLException,
 			LigueBaseballException, Exception {
 		try {
-			if (equipe.existe(equipeNom))
+			if (equipe.existe(equipeNom) != -1)
 				throw new LigueBaseballException("Equipe existe deja: "
 						+ equipeNom);
 			int equipeId = equipe.maxJoueur();
@@ -50,7 +50,7 @@ public class GestionEquipe {
 	public void ajout(String equipeNom, String nomTerrain, String adresseTerrain)
 			throws SQLException, LigueBaseballException, Exception {
 		try {
-			if (equipe.existe(equipeNom))
+			if (equipe.existe(equipeNom) != -1)
 				throw new LigueBaseballException("Equipe existe deja: "
 						+ equipeNom);
 			if (!terrain.existe(nomTerrain)) {
@@ -74,18 +74,19 @@ public class GestionEquipe {
 	public void supprimer(String equipeNom) throws SQLException,
 			LigueBaseballException, Exception {
 		try {
-			boolean exister = equipe.existe(equipeNom);
-			if (exister == false)
+			if (equipe.existe(equipeNom) == -1)
 				throw new LigueBaseballException("Equipe inexistante: "
 						+ equipeNom);
-			boolean jexister = equipe.existeJoueurs(equipeNom);
-			if (jexister == true) {
-				throw new LigueBaseballException(
-						"Impossible de supprimer cette equipe ( " + equipeNom
-								+ " ) car il y a des joueurs associes a cette equipe.");
+			else{
+				if (equipe.existeJoueurs(equipeNom)) {
+					throw new LigueBaseballException(
+							"Impossible de supprimer cette equipe ( " + equipeNom
+									+ " ) car il y a des joueurs associes a cette equipe.");
+				}
+				else
+					/* Suppression de l'equipe. */
+					equipe.suppressionEquipe(equipeNom);
 			}
-			/* Suppression de l'equipe. */
-			equipe.suppressionEquipe(equipeNom);
 			cx.commit();
 		} catch (Exception e) {
 			cx.rollback();

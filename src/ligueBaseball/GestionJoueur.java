@@ -6,22 +6,24 @@ import java.util.List;
 
 public class GestionJoueur {
 	private Joueur joueur;
+	private Equipe equipe;
 	private Connexion cx;
 
-	public GestionJoueur(Joueur joueur) {
+	public GestionJoueur(Joueur joueur, Equipe equipe) {
 		this.cx = joueur.getConnexion();
 		this.joueur = joueur;
+		this.equipe = equipe;
 	}
 
-	public void ajout(String joueurNom, String joueurPrenom, String equipe, int numero,Date dateDebut)
+	public void ajout(String joueurNom, String joueurPrenom, String nomEquipe, int numero,Date dateDebut)
 			throws SQLException, LigueBaseballException, Exception {
 		try{
-			if(!joueur.equipeExiste(equipe))
+			if(equipe.existe(nomEquipe) == -1)
 				throw new LigueBaseballException("equipe inexistante");
-			if(!joueur.numeroExiste(equipe, numero))
+			if(!joueur.numeroExiste(nomEquipe, numero))
 				throw new LigueBaseballException("Numero deja pris!");
 			
-			joueur.ajoutJoueur(joueurNom, joueurPrenom, numero, equipe,dateDebut);
+			joueur.ajoutJoueur(joueurNom, joueurPrenom, numero, nomEquipe,dateDebut);
 		}
 		catch (Exception e){
 			cx.rollback();
@@ -29,15 +31,15 @@ public class GestionJoueur {
 		}
 	}
 	
-	public void ajout(String joueurNom, String joueurPrenom, String equipe, int numero) 	
+	public void ajout(String joueurNom, String joueurPrenom, String nomEquipe, int numero) 	
 			throws SQLException, LigueBaseballException, Exception {
 		try{
-			if(!joueur.equipeExiste(equipe))
+			if(equipe.existe(nomEquipe) == -1)
 				throw new LigueBaseballException("equipe inexistante");
-			if(!joueur.numeroExiste(equipe, numero))
+			if(!joueur.numeroExiste(nomEquipe, numero))
 				throw new LigueBaseballException("Numero deja pris!");
 			
-			joueur.ajoutJoueur(joueurNom, joueurPrenom, numero, equipe);
+			joueur.ajoutJoueur(joueurNom, joueurPrenom, numero, nomEquipe);
 		}
 		catch (Exception e){
 			cx.rollback();
@@ -75,8 +77,9 @@ public class GestionJoueur {
 		}
 	}
 	
-	public void getJoueur(int equipeId) throws SQLException
+	public void getJoueur(String nomEquipe) throws SQLException
 	{
+		int equipeId = equipe.existe(nomEquipe);
 		try{
 			List<TupleJoueur> tj = joueur.selectjoueurEquipe(equipeId);
 			for(TupleJoueur t : tj)
@@ -91,6 +94,6 @@ public class GestionJoueur {
 
 	public void getJoueur() throws SQLException
 	{
-		getJoueur(0);
+		getJoueur("");
 	}
 }
