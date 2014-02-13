@@ -1,8 +1,10 @@
 package ligueBaseball;
-import java.sql.*;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.SQLException;
 
 public class Joueur {
 
@@ -11,7 +13,7 @@ public class Joueur {
 	private PreparedStatement stmtDelete;
 	private PreparedStatement stmtExist;
 	private PreparedStatement stmtSelectJoueurEquipeParam;
-	private PreparedStatement stmtSelectJoueurEquipe;
+	private PreparedStatement stmtSelectJoueur;
 	private PreparedStatement stmtMaxId;
 	private PreparedStatement stmtGetId;
 	private PreparedStatement stmtGetEquipeId;
@@ -27,15 +29,13 @@ public class Joueur {
 		stmtInsert =  cx.getConnection().prepareStatement
 			    ("INSERT INTO joueur (joueurid, joueurnom, joueurprenom) VALUES (?,?,?)");
 		stmtInsertWithEquipe =  cx.getConnection().prepareStatement
-			    ("INSERT INTO faitpartie (joueurid, equipeid, numero) VALUES (?,?,?)");
+			    ("INSERT INTO faitpartie (joueurid, equipeid, numero, datedebut) VALUES (?,?,?,?)");
 		stmtDelete = cx.getConnection().prepareStatement
 			    ("delete from joueur where joueurid = ?");
 		stmtMaxId = cx.getConnection().prepareStatement
 			    ("select max(joueurid) from joueur");
 		stmtSelectJoueurEquipeParam = cx.getConnection().prepareStatement
 			    ("select j.joueurid, j.joueurnom, j.joueurprenom, e.equipenom from faitpartie f, equipe e, joueur j where f.equipeid=e.equipeid and f.joueurid = j.joueurid and e.equipeid = ?");
-		stmtSelectJoueurEquipe = cx.getConnection().prepareStatement
-			    ("select j.joueurid, j.joueurnom, j.joueurprenom, e.equipenom from faitpartie f, equipe e, joueur j where f.equipeid=e.equipeid and f.joueurid = j.joueurid");
 		stmtExist = cx.getConnection().prepareStatement
 			    ("Select * from joueur where joueurnom = ? and joueurprenom = ?");
 		stmtGetId = cx.getConnection().prepareStatement
@@ -45,6 +45,8 @@ public class Joueur {
 		stmtNumeroExiste = cx.getConnection().prepareStatement
 			    ("Select * from equipe e, faitpartie f, joueur j where equipenom = ? and e.numero = ? and j.joueurid=f.joueurid and f.equipeid = e.equipeid");
 		stmtGetEquipeId =  cx.getConnection().prepareStatement("select equipeid from equipe where equipenom= ?");
+		stmtSelectJoueur = cx.getConnection().prepareStatement("select joueurnom, joueur.joueurprenom,equipe.equipenom from joueur left join faitpartie on faitpartie.joueurid = joueur.joueurid left join equipe on equipe.equipeid = faitpartie.equipeid");
+		
 	}
 	
 	public int getId(String nom,String prenom) throws SQLException
@@ -69,8 +71,6 @@ public class Joueur {
 	public void ajoutJoueur(String joueurNom, String joueurPrenom)
 			throws SQLException
 	{
-		
-		
 		int maxJoueurId = getMaxJoueurId();
 		
 		stmtInsert.setInt(0, maxJoueurId);
@@ -94,6 +94,30 @@ public class Joueur {
 		stmtInsertWithEquipe.setInt(joueurId, 0);
 		stmtInsertWithEquipe.setInt(equipeId, 1);
 		stmtInsertWithEquipe.setInt(numero, 2);
+		
+		java.util.Date today = new java.util.Date();
+		Date sqlDate = new Date(today.getTime());
+		stmtInsertWithEquipe.setDate(3, sqlDate);
+		
+		ajoutJoueur(joueurNom, joueurPrenom);
+	}
+	
+	public void ajoutJoueur(String joueurNom, String joueurPrenom, int numero, String equipe, Date dateDebut) throws SQLException, LigueBaseballException
+	{
+		stmtGetEquipeId.setString(0, equipe);
+		ResultSet rset = stmtGetEquipeId.executeQuery();
+		int equipeId = 0;
+		if(rset.next())
+		{
+			equipeId = rset.getInt(0);
+		}
+		int joueurId = getMaxJoueurId();
+		
+		stmtInsertWithEquipe.setInt(joueurId, 0);
+		stmtInsertWithEquipe.setInt(equipeId, 1);
+		stmtInsertWithEquipe.setInt(numero, 2);
+		
+		stmtInsertWithEquipe.setDate(3, dateDebut);
 		
 		ajoutJoueur(joueurNom, joueurPrenom);
 	}
@@ -136,7 +160,7 @@ public class Joueur {
 		ResultSet rset;
 		if(equipeId == 0)
 		{
-			 rset = stmtSelectJoueurEquipe.executeQuery();
+			 rset = stmtSelectJoueur.executeQuery();
 		}
 		else
 		{

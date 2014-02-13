@@ -6,6 +6,14 @@ public class TupleJoueur {
 	int JoueurId;
 	String EquipeNom;
 	
+	public TupleJoueur(int joueurId, String nom, String prenom)
+	{
+		Nom = nom;
+		Prenom = prenom;
+		JoueurId = joueurId;
+		EquipeNom = "";
+	}
+
 	public TupleJoueur(int joueurId, String nom, String prenom,String equipeNom)
 	{
 		Nom = nom;

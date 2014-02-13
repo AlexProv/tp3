@@ -1,5 +1,6 @@
 package ligueBaseball;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -12,6 +13,22 @@ public class GestionJoueur {
 		this.joueur = joueur;
 	}
 
+	public void ajout(String joueurNom, String joueurPrenom, String equipe, int numero,Date dateDebut)
+			throws SQLException, LigueBaseballException, Exception {
+		try{
+			if(!joueur.equipeExiste(equipe))
+				throw new LigueBaseballException("equipe inexistante");
+			if(!joueur.numeroExiste(equipe, numero))
+				throw new LigueBaseballException("Numero deja pris!");
+			
+			joueur.ajoutJoueur(joueurNom, joueurPrenom, numero, equipe,dateDebut);
+		}
+		catch (Exception e){
+			cx.rollback();
+			throw e;
+		}
+	}
+	
 	public void ajout(String joueurNom, String joueurPrenom, String equipe, int numero) 	
 			throws SQLException, LigueBaseballException, Exception {
 		try{
@@ -72,4 +89,8 @@ public class GestionJoueur {
 		}
 	}
 
+	public void getJoueur() throws SQLException
+	{
+		getJoueur(0);
+	}
 }
