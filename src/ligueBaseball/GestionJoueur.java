@@ -12,6 +12,22 @@ public class GestionJoueur {
 		this.joueur = joueur;
 	}
 
+	public void ajout(String joueurNom, String joueurPrenom, String equipe, int numero) 	
+			throws SQLException, LigueBaseballException, Exception {
+		try{
+			if(!joueur.equipeExiste(equipe))
+				throw new LigueBaseballException("equipe inexistante");
+			if(!joueur.numeroExiste(equipe, numero))
+				throw new LigueBaseballException("Numero deja pris!");
+			
+			joueur.ajoutJoueur(joueurNom, joueurPrenom, numero, equipe);
+		}
+		catch (Exception e){
+			cx.rollback();
+			throw e;
+		}
+	}
+	
 	public void ajout(String joueurNom, String joueurPrenom)
 			throws SQLException, LigueBaseballException, Exception {
 		try {
