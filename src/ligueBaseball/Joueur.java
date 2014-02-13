@@ -7,12 +7,17 @@ import java.sql.SQLException;
 public class Joueur {
 
 	private PreparedStatement stmtInsert;
+	private PreparedStatement stmtInsertWithEquipe;
 	private PreparedStatement stmtDelete;
 	private PreparedStatement stmtExist;
 	private PreparedStatement stmtSelectJoueurEquipeParam;
 	private PreparedStatement stmtSelectJoueurEquipe;
 	private PreparedStatement stmtMaxId;
 	private PreparedStatement stmtGetId;
+	private PreparedStatement stmtGetEquipeId;
+	private PreparedStatement stmtEquipeExiste;
+	private PreparedStatement stmtNumeroExiste;
+	
 	private Connexion cx;
 	
 	public Joueur(Connexion cx) throws  SQLException
@@ -21,6 +26,8 @@ public class Joueur {
 		
 		stmtInsert =  cx.getConnection().prepareStatement
 			    ("INSERT INTO joueur (joueurid, joueurnom, joueurprenom) VALUES (?,?,?)");
+		stmtInsertWithEquipe =  cx.getConnection().prepareStatement
+			    ("INSERT INTO faitpartie (joueurid, equipeid, numero) VALUES (?,?,?)");
 		stmtDelete = cx.getConnection().prepareStatement
 			    ("delete from joueur where joueurid = ?");
 		stmtMaxId = cx.getConnection().prepareStatement
@@ -33,6 +40,11 @@ public class Joueur {
 			    ("Select * from joueur where joueurnom = ? and joueurprenom = ?");
 		stmtGetId = cx.getConnection().prepareStatement
 			    ("Select joueurid from joueur where joueurnom = ? and joueurprenom = ?");
+		stmtEquipeExiste = cx.getConnection().prepareStatement
+			    ("Select * from equipe where equipenom = ?");
+		stmtNumeroExiste = cx.getConnection().prepareStatement
+			    ("Select * from equipe e, faitpartie f, joueur j where equipenom = ? and e.numero = ? and j.joueurid=f.joueurid and f.equipeid = e.equipeid");
+		stmtGetEquipeId =  cx.getConnection().prepareStatement("select equipeid from equipe where equipenom= ?");
 	}
 	
 	public int getId(String nom,String prenom) throws SQLException
@@ -51,25 +63,72 @@ public class Joueur {
 	{
 		stmtExist.setString(0, nom);
 		stmtExist.setString(1, prenom);
-		return stmtExist.execute();
+		return stmtExist.executeQuery().next();
 	}
 	
 	public void ajoutJoueur(String joueurNom, String joueurPrenom)
 			throws SQLException
-			{
-				ResultSet rset = stmtMaxId.executeQuery();   
-				int maxJoueurId = 0;
-				if (rset.next()){
-					maxJoueurId = rset.getInt(1) + 1;
-				}
-				rset.close();
-				
-				stmtInsert.setInt(0, maxJoueurId);
-				stmtInsert.setString(1, joueurNom);
-				stmtInsert.setString(2, joueurPrenom);
-				
-				stmtInsert.executeUpdate();
-			}
+	{
+		
+		
+		int maxJoueurId = getMaxJoueurId();
+		
+		stmtInsert.setInt(0, maxJoueurId);
+		stmtInsert.setString(1, joueurNom);
+		stmtInsert.setString(2, joueurPrenom);
+		
+		stmtInsert.executeUpdate();
+	}
+	
+	public void ajoutJoueur(String joueurNom, String joueurPrenom, int numero, String equipe) throws SQLException, LigueBaseballException
+	{
+		stmtGetEquipeId.setString(0, equipe);
+		ResultSet rset = stmtGetEquipeId.executeQuery();
+		int equipeId = 0;
+		if(rset.next())
+		{
+			equipeId = rset.getInt(0);
+		}
+		int joueurId = getMaxJoueurId();
+		
+		stmtInsertWithEquipe.setInt(joueurId, 0);
+		stmtInsertWithEquipe.setInt(equipeId, 1);
+		stmtInsertWithEquipe.setInt(numero, 2);
+		
+		ajoutJoueur(joueurNom, joueurPrenom);
+	}
+
+	public boolean numeroExiste(String equipe, int numero) throws SQLException
+	{
+		stmtNumeroExiste.setString(0, equipe);
+		stmtNumeroExiste.setInt(1, numero);
+		if(!stmtNumeroExiste.executeQuery().next()){
+			//throw new LigueBaseballException("Numero deja utiliser!");
+			return true;
+		}	
+		return false;
+	}
+	
+	public boolean equipeExiste(String equipe) throws SQLException
+	{
+		stmtEquipeExiste.setString(0, equipe);
+		if(!stmtEquipeExiste.executeQuery().next()){
+			//throw new LigueBaseballException("Equipe inexistante!");
+			return true;
+		}
+		return false;
+	}
+	
+	private int getMaxJoueurId() throws SQLException
+	{
+		ResultSet rset = stmtMaxId.executeQuery();   
+		int maxJoueurId = 0;
+		if (rset.next()){
+			maxJoueurId = rset.getInt(1) + 1;
+		}
+		rset.close();
+		return maxJoueurId;
+	}
 	
 	public List<TupleJoueur> selectjoueurEquipe(int equipeId) throws SQLException
 	{
