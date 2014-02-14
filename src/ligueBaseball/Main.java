@@ -35,7 +35,6 @@ public class Main {
 					gestionLigue = new GestionLigueBaseball("postgres", args[0], args[1], args[2]);
 					traiterTransactions(reader);
 				} catch (Exception e) {
-					e.printStackTrace(System.out);
 				} finally {
 					try {
 						gestionLigue.fermer();
@@ -197,7 +196,7 @@ public class Main {
 		if (tokenizer.hasMoreElements()) {
 			String token = tokenizer.nextToken();
 			try {
-				return new java.sql.Date(FormatDate.convertirDate(token).getDate());
+				return new java.sql.Date(FormatDate.convertirDate(token).getTime());
 			} catch (ParseException e) {
 				throw new LigueBaseballException(
 						"Date en format YYYY-MM-DD attendue a la place  de \""

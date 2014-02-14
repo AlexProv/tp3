@@ -24,6 +24,7 @@ public class GestionJoueur {
 				throw new LigueBaseballException("Numero deja pris!");
 			
 			joueur.ajoutJoueur(joueurNom, joueurPrenom, numero, nomEquipe,dateDebut);
+			cx.commit();
 		}
 		catch (Exception e){
 			cx.rollback();
@@ -39,6 +40,7 @@ public class GestionJoueur {
 				throw new LigueBaseballException("Numero deja pris!");
 			
 			joueur.ajoutJoueur(joueurNom, joueurPrenom, numero, nomEquipe);
+			cx.commit();
 		}
 		catch (Exception e){
 			cx.rollback();
@@ -61,10 +63,10 @@ public class GestionJoueur {
 	public void supprimer(String joueurNom, String joueurPrenom) throws SQLException,
 			LigueBaseballException, Exception {
 		try {
-			boolean exister = joueur.existe(joueurNom, joueurPrenom);
-			if (exister == false)
+			if (!joueur.existe(joueurNom, joueurPrenom))
 				throw new LigueBaseballException("Joueur inexistant: "
 						+ joueurNom + " " + joueurPrenom);
+			joueur.suppressionFaitPartie(joueur.getId(joueurNom, joueurPrenom));
 			
 			joueur.suppressionJoueur(joueur.getId(joueurNom, joueurPrenom));
 			cx.commit();
@@ -73,9 +75,11 @@ public class GestionJoueur {
 		}
 	}
 	
-	public void getJoueur(String nomEquipe) throws SQLException
+	public void getJoueur(String nomEquipe) throws SQLException, LigueBaseballException
 	{
 		int equipeId = equipe.existe(nomEquipe);
+		if(equipeId == -1)
+			throw new LigueBaseballException("Equipe inexistante " + nomEquipe);
 		try{
 			List<TupleJoueur> tj = joueur.selectjoueurEquipe(equipeId);
 			for(TupleJoueur t : tj)
@@ -88,7 +92,7 @@ public class GestionJoueur {
 		}
 	}
 
-	public void getJoueur() throws SQLException
+	public void getJoueur() throws SQLException, LigueBaseballException
 	{
 		getJoueur("");
 	}
