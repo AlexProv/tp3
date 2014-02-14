@@ -39,7 +39,6 @@ public class GestionEquipe {
 			cx.commit();
 		} catch (Exception e) {
 			cx.rollback();
-			throw e;
 		}
 	}
 
@@ -64,7 +63,6 @@ public class GestionEquipe {
 		} catch (Exception e) {
 			// System.out.println(e);
 			cx.rollback();
-			throw e;
 		}
 	}
 
@@ -90,7 +88,6 @@ public class GestionEquipe {
 			cx.commit();
 		} catch (Exception e) {
 			cx.rollback();
-			throw e;
 		}
 	}
 

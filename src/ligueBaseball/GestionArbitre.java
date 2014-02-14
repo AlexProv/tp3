@@ -25,7 +25,6 @@ public class GestionArbitre {
 			cx.commit();
 		} catch (Exception e) {
 			cx.rollback();
-			throw e;
 		}
 
 	}

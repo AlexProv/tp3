@@ -27,7 +27,6 @@ public class GestionJoueur {
 		}
 		catch (Exception e){
 			cx.rollback();
-			throw e;
 		}
 	}
 	
@@ -43,7 +42,6 @@ public class GestionJoueur {
 		}
 		catch (Exception e){
 			cx.rollback();
-			throw e;
 		}
 	}
 	
@@ -57,7 +55,6 @@ public class GestionJoueur {
 			cx.commit();
 		} catch (Exception e) {
 			cx.rollback();
-			throw e;
 		}
 	}
 
@@ -73,7 +70,6 @@ public class GestionJoueur {
 			cx.commit();
 		} catch (Exception e) {
 			cx.rollback();
-			throw e;
 		}
 	}
 	

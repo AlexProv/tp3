@@ -197,7 +197,7 @@ public class Main {
 		if (tokenizer.hasMoreElements()) {
 			String token = tokenizer.nextToken();
 			try {
-				return new java.sql.Date(FormatDate.convertirDate(token).getTime());
+				return new java.sql.Date(FormatDate.convertirDate(token).getDate());
 			} catch (ParseException e) {
 				throw new LigueBaseballException(
 						"Date en format YYYY-MM-DD attendue a la place  de \""
