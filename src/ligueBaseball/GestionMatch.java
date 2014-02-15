@@ -3,6 +3,7 @@ package ligueBaseball;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.util.List;
 
 public class GestionMatch {
 	
@@ -49,6 +50,29 @@ public class GestionMatch {
 			cx.rollback();
 		}
 	}
+
+	public void afficherResultatDate() throws SQLException {
+		List<TupleMatch> list = match.afficherResultat();
+		System.out.println("Local-Visiteur : Liste des arbitres");
+		for (TupleMatch tupleMatch : list) {
+			System.out.println(tupleMatch.PointageLocal + "-" + tupleMatch.PointageVisiteur + " : " + tupleMatch.ListeArbitres);
+		}
+	}
 	
+	public void afficherResultatDate(Date date) throws SQLException {
+		List<TupleMatch> list = match.afficherResultat(date);
+		System.out.println("Local-Visiteur : Liste des arbitres");
+		for (TupleMatch tupleMatch : list) {
+			System.out.println(tupleMatch.PointageLocal + "-" + tupleMatch.PointageVisiteur + " : " + tupleMatch.ListeArbitres);
+		}
+	}
+	
+	public void afficherResultatDate(String equipe) throws SQLException {
+		List<TupleMatch> list = match.afficherResultat(equipe);
+		System.out.println("Local-Visiteur : Liste des arbitres");
+		for (TupleMatch tupleMatch : list) {
+			System.out.println(tupleMatch.PointageLocal + "-" + tupleMatch.PointageVisiteur + " : " + tupleMatch.ListeArbitres);
+		}
+	}
 	
 }

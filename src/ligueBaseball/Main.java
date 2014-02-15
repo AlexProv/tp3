@@ -125,7 +125,16 @@ public class Main {
 			gestionLigue.gestionMatch.entrerPointage(readDate(tokenizer), readTime(tokenizer), readString(tokenizer), readString(tokenizer), readInt(tokenizer), readInt(tokenizer));
 		}
 		else if("afficherResultatsDate".startsWith(commande)){
-			
+			if(tokenizer.countTokens() == 0)
+				gestionLigue.gestionMatch.afficherResultatDate();
+			else if(tokenizer.countTokens() == 1)
+				gestionLigue.gestionMatch.afficherResultatDate(readDate(tokenizer));
+		}
+		else if("afficherResultats".startsWith(commande)){
+			if(tokenizer.countTokens() == 0)
+				gestionLigue.gestionMatch.afficherResultatDate();
+			else if(tokenizer.countTokens() == 1)
+				gestionLigue.gestionMatch.afficherResultatDate(readString(tokenizer));
 		}
 		else if("--".startsWith(commande)){
 			//Ligne de commentaire, ne rien faire et passer a la prochaine ligne
@@ -155,6 +164,7 @@ public class Main {
 		System.out.println("  arbitrerMatch <MatchDate> <MatchHeure> <EquipeNomLocal> <EquipeNomVisiteur> <ArbitreNom> <ArbitrePrenom>");
 		System.out.println("  entrerResultatMatch <MatchDate> <MatchHeure> <EquipeNomLocal> <EquipeNomVisiteur> <PointsLocal> <PointsVisiteur> ");
 		System.out.println("  afficherResultatsDate [<APartirDate>]");
+		System.out.println("  afficherResultats [<EquipeNom>]");
 		System.out.println("  exit");
 	}
 	

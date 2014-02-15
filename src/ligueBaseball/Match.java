@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Match {
 	
@@ -13,6 +15,9 @@ public class Match {
 	private PreparedStatement stmtExiste;
 	private PreparedStatement stmtUpdatePoints;
 	private PreparedStatement stmtMaxId;
+	private PreparedStatement stmtTousResultats;
+	private PreparedStatement stmtTousResultatsDate;
+	private PreparedStatement stmtTousResultatsEquipe;
 	
 	public Match(Connexion cx) throws SQLException{
 		this.cx = cx;
@@ -26,6 +31,26 @@ public class Match {
 		stmtMaxId = cx.getConnection().prepareStatement(
 				"select max(matchid) from match");
 		stmtUpdatePoints = cx.getConnection().prepareStatement("update match set pointslocal=?, pointsvisiteur=? where matchid = ?");
+		stmtTousResultats = cx.getConnection().prepareStatement(
+				"select pointslocal, pointsvisiteur, array_to_string(array_agg(arbitre.arbitrenom),',')"
+				+ " from match left outer join arbitrer on arbitrer.matchid = match.matchid "
+				+ "left outer join arbitre on arbitre.arbitreid = arbitrer.arbitreid "
+				+ "where pointslocal is not null "
+				+ "group by pointslocal, pointsvisiteur, matchdate order by matchdate");
+		stmtTousResultatsDate = cx.getConnection().prepareStatement(
+				"select pointslocal, pointsvisiteur, array_to_string(array_agg(arbitre.arbitrenom),',')"
+				+ " from match left outer join arbitrer on arbitrer.matchid = match.matchid "
+				+ "left outer join arbitre on arbitre.arbitreid = arbitrer.arbitreid "
+				+ "where pointslocal is not null and match.matchdate > ? "
+				+ "group by pointslocal, pointsvisiteur, matchdate order by matchdate");
+		stmtTousResultatsEquipe = cx.getConnection().prepareStatement(
+				"select pointslocal, pointsvisiteur, array_to_string(array_agg(arbitre.arbitrenom),',')"
+				+ " from match left outer join arbitrer on arbitrer.matchid = match.matchid "
+				+ "left outer join arbitre on arbitre.arbitreid = arbitrer.arbitreid "
+				+ "left outer join equipe e1 on e1.equipeid = match.equipelocal "
+				+ "left outer join equipe e2 on e2.equipeid = match.equipevisiteur"
+				+ "where pointslocal is not null and (e1.equipenom = ? or e2.equipenom = ?)"
+				+ "group by pointslocal, pointsvisiteur, matchdate order by matchdate");
 	}
 	
 	public Connexion getConnexion() {
@@ -70,5 +95,35 @@ public class Match {
 		stmtUpdatePoints.setInt(2, pointsVisiteur);
 		stmtUpdatePoints.setInt(3, matchId);
 		stmtUpdatePoints.executeUpdate();
+	}
+	
+	public List<TupleMatch> afficherResultat() throws SQLException{
+		List<TupleMatch> list = new ArrayList<TupleMatch>();
+		ResultSet rset = stmtTousResultats.executeQuery();
+		while(rset.next()){
+			list.add(new TupleMatch(rset.getInt(1), rset.getInt(2), rset.getString(3)));
+		}
+		return list;
+	}
+	
+	public List<TupleMatch> afficherResultat(Date date) throws SQLException{
+		List<TupleMatch> list = new ArrayList<TupleMatch>();
+		stmtTousResultatsDate.setDate(1, date);
+		ResultSet rset = stmtTousResultatsDate.executeQuery();
+		while(rset.next()){
+			list.add(new TupleMatch(rset.getInt(1), rset.getInt(2), rset.getString(3)));
+		}
+		return list;
+	}
+	
+	public List<TupleMatch> afficherResultat(String equipe) throws SQLException{
+		List<TupleMatch> list = new ArrayList<TupleMatch>();
+		stmtTousResultatsEquipe.setString(1, equipe);
+		stmtTousResultatsEquipe.setString(2, equipe);
+		ResultSet rset = stmtTousResultatsEquipe.executeQuery();
+		while(rset.next()){
+			list.add(new TupleMatch(rset.getInt(1), rset.getInt(2), rset.getString(3)));
+		}
+		return list;
 	}
 }
