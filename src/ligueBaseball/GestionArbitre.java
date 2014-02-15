@@ -42,7 +42,7 @@ public class GestionArbitre {
 
 	}
 
-	public void arbitrerMatch(java.sql.Date matchDate, String matchHeure, String equipeNomLocal, 
+	public void arbitrerMatch(java.sql.Date matchDate, java.sql.Time matchHeure, String equipeNomLocal, 
 			String equipeNomVisiteur, String arbitreNom, String arbitrePrenom) throws LigueBaseballException {
 		try {
 			int arbitreId = arbitre.existe(arbitreNom, arbitrePrenom);

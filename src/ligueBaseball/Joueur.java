@@ -40,18 +40,14 @@ public class Joueur {
 				"delete from faitpartie where joueurid = ?");
 		stmtMaxId = cx.getConnection().prepareStatement(
 				"select max(joueurid) from joueur");
-		stmtSelectJoueurEquipeParam = cx
-				.getConnection()
-				.prepareStatement(
-						"select j.joueurid, j.joueurnom, j.joueurprenom, e.equipenom from faitpartie f, equipe e, joueur j where f.equipeid=e.equipeid and f.joueurid = j.joueurid and e.equipeid = ?");
-		stmtExist = cx
-				.getConnection()
-				.prepareStatement(
-						"Select * from joueur where joueurnom = ? and joueurprenom = ?");
-		stmtGetId = cx
-				.getConnection()
-				.prepareStatement(
-						"Select joueurid from joueur where joueurnom = ? and joueurprenom = ?");
+		stmtSelectJoueurEquipeParam = cx.getConnection().prepareStatement(
+				"select j.joueurid, j.joueurnom, j.joueurprenom, e.equipenom from faitpartie f, "
+				+ "equipe e, joueur j where f.equipeid=e.equipeid and f.joueurid = j.joueurid and "
+				+ "e.equipeid = ?");
+		stmtExist = cx.getConnection().prepareStatement(
+				"Select * from joueur where joueurnom = ? and joueurprenom = ?");
+		stmtGetId = cx.getConnection().prepareStatement(
+				"Select joueurid from joueur where joueurnom = ? and joueurprenom = ?");
 		stmtNumeroExiste = cx.getConnection().prepareStatement(
 						"Select * from equipe e, faitpartie f, joueur j where equipenom = ? "
 						+ "and f.numero = ? and j.joueurid=f.joueurid and f.equipeid = e.equipeid");

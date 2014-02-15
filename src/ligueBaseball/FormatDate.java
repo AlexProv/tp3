@@ -1,4 +1,5 @@
 package ligueBaseball;
+import java.sql.Time;
 import java.text.*;
 import java.util.Date;
 
@@ -19,10 +20,14 @@ import java.util.Date;
 public class FormatDate
 {
 private static SimpleDateFormat formatAMJ;
+private static SimpleDateFormat formatHHMM;
+
 static
     {
     formatAMJ = new SimpleDateFormat("yyyy-MM-dd");
     formatAMJ.setLenient(false);
+    formatHHMM = new SimpleDateFormat("hh:mm");
+    formatHHMM.setLenient(false);
     }
 
 public static void main(String[] args) throws ParseException
@@ -39,6 +44,11 @@ public static Date convertirDate(String dateString)
   throws ParseException
 {
 return formatAMJ.parse(dateString);
+}
+
+public static Time convertirTime(String timeString) throws ParseException{
+	long hhmm = formatHHMM.parse(timeString).getTime();
+	return new Time(hhmm);
 }
 
 public static String toString(Date date)

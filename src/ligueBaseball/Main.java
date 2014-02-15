@@ -109,6 +109,9 @@ public class Main {
 			if(tokenizer.countTokens() == 2)
 				gestionLigue.gestionJoueur.supprimer(readString(tokenizer), readString(tokenizer));
 		}
+		else if("creerMatch".startsWith(commande)){
+			gestionLigue.gestionMatch.ajout(readDate(tokenizer), readTime(tokenizer), readString(tokenizer), readString(tokenizer));
+		}
 		else if("creerArbitre".startsWith(commande)){
 			gestionLigue.gestionArbitre.ajout(readString(tokenizer), readString(tokenizer));
 		}
@@ -116,7 +119,13 @@ public class Main {
 			gestionLigue.gestionArbitre.getArbitre();
 		}
 		else if("arbitrerMatch".startsWith(commande)){
-			gestionLigue.gestionArbitre.getArbitre();
+			gestionLigue.gestionArbitre.arbitrerMatch(readDate(tokenizer), readTime(tokenizer), readString(tokenizer), readString(tokenizer), readString(tokenizer), readString(tokenizer));
+		}
+		else if("entrerResultatMatch".startsWith(commande)){
+			gestionLigue.gestionMatch.entrerPointage(readDate(tokenizer), readTime(tokenizer), readString(tokenizer), readString(tokenizer), readInt(tokenizer), readInt(tokenizer));
+		}
+		else if("afficherResultatsDate".startsWith(commande)){
+			
 		}
 		else if("--".startsWith(commande)){
 			//Ligne de commentaire, ne rien faire et passer a la prochaine ligne
@@ -140,9 +149,12 @@ public class Main {
 		System.out.println("  creerJoueur <JoueurNom> <JoueurPrenom> [<EquipeNom> <Numero> [<DateDebut>]]");
 		System.out.println("  afficherJoueursEquipe [<EquipeNom >]");
 		System.out.println("  supprimerJoueur <JoueurNom> <JoueurPrenom>");
+		System.out.println("  creerMatch <MatchDate> <MatchHeure> <EquipeNomLocal> <EquipeNomVisiteur>");
 		System.out.println("  creerArbitre <ArbitreNom> <ArbitrePrenom>");
 		System.out.println("  afficherArbitres");
 		System.out.println("  arbitrerMatch <MatchDate> <MatchHeure> <EquipeNomLocal> <EquipeNomVisiteur> <ArbitreNom> <ArbitrePrenom>");
+		System.out.println("  entrerResultatMatch <MatchDate> <MatchHeure> <EquipeNomLocal> <EquipeNomVisiteur> <PointsLocal> <PointsVisiteur> ");
+		System.out.println("  afficherResultatsDate [<APartirDate>]");
 		System.out.println("  exit");
 	}
 	
@@ -204,6 +216,22 @@ public class Main {
 			}
 		} else
 			throw new LigueBaseballException("Une date est attendu");
+	}
+	
+	/**
+	 * lecture d'un heure sous format hh:mm
+	 */
+	static java.sql.Time readTime(StringTokenizer tokenizer)
+			throws LigueBaseballException {
+		if (tokenizer.hasMoreElements()) {
+			String token = tokenizer.nextToken();
+			try {
+				return FormatDate.convertirTime(token);
+			} catch (ParseException e) {
+				throw new LigueBaseballException("Time en format hh:mm attendue a la place de \"" + token + "\"");
+			}
+		} else
+			throw new LigueBaseballException("Une heure est attendu");
 	}
 
 }

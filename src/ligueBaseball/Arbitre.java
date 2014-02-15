@@ -14,7 +14,6 @@ public class Arbitre {
 	private PreparedStatement stmtSelectAll;
 	private PreparedStatement stmtExisteArbitre;
 	private PreparedStatement stmtMaxId;
-	private PreparedStatement stmtInsertArbitreMatch;
 	private Connexion cx;
 	
 	

@@ -45,6 +45,7 @@ match = new Match(cx);
 gestionEquipe = new GestionEquipe(equipe, terrain);
 gestionArbitre = new GestionArbitre(arbitre, match);
 gestionJoueur = new GestionJoueur(joueur, equipe);
+gestionMatch = new GestionMatch(match, equipe);
 
 }
 
