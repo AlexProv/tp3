@@ -72,7 +72,7 @@ public class Main {
 	
 	static void executerTransaction(StringTokenizer tokenizer) throws SQLException, LigueBaseballException, Exception{
 		String commande = tokenizer.nextToken();
-		
+		try{
 		if("aide".startsWith(commande)){
 			afficherAide();
 		}
@@ -139,6 +139,24 @@ public class Main {
 		else if("--".startsWith(commande)){
 			//Ligne de commentaire, ne rien faire et passer a la prochaine ligne
 		}
+		}
+		catch(SQLException e)
+		{
+			System.out.println();
+			System.out.println("oh eh... sql");
+		}
+		catch(LigueBaseballException e)
+		{
+			System.out.println();
+			System.out.println("oh eh... wtf");
+			 afficherAide();
+		}
+		catch(Exception e)
+		{
+			System.out.println();
+			System.out.println("oh shit what");
+		}
+
 	}
 
 	/**
