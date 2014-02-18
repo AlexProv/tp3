@@ -261,5 +261,4 @@ public class Main {
 		} else
 			throw new LigueBaseballException("Une heure est attendu");
 	}
-
 }
