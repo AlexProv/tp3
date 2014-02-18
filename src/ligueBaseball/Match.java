@@ -44,12 +44,12 @@ public class Match {
 				+ "where pointslocal is not null and match.matchdate > ? "
 				+ "group by pointslocal, pointsvisiteur, matchdate order by matchdate");
 		stmtTousResultatsEquipe = cx.getConnection().prepareStatement(
-				"select pointslocal, pointsvisiteur, array_to_string(array_agg(arbitre.arbitrenom),',')"
-				+ " from match left outer join arbitrer on arbitrer.matchid = match.matchid "
+				"select pointslocal, pointsvisiteur, array_to_string(array_agg(arbitre.arbitrenom),',') "
+				+ "from match left outer join arbitrer on arbitrer.matchid = match.matchid "
 				+ "left outer join arbitre on arbitre.arbitreid = arbitrer.arbitreid "
 				+ "left outer join equipe e1 on e1.equipeid = match.equipelocal "
-				+ "left outer join equipe e2 on e2.equipeid = match.equipevisiteur"
-				+ "where pointslocal is not null and (e1.equipenom = ? or e2.equipenom = ?)"
+				+ "left outer join equipe e2 on e2.equipeid = match.equipevisiteur "
+				+ "where pointslocal is not null and (e1.equipenom = ? or e2.equipenom = ?) "
 				+ "group by pointslocal, pointsvisiteur, matchdate order by matchdate");
 	}
 	

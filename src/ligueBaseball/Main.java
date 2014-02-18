@@ -124,13 +124,13 @@ public class Main {
 		else if("entrerResultatMatch".startsWith(commande)){
 			gestionLigue.gestionMatch.entrerPointage(readDate(tokenizer), readTime(tokenizer), readString(tokenizer), readString(tokenizer), readInt(tokenizer), readInt(tokenizer));
 		}
-		else if("afficherResultatsDate".startsWith(commande)){
+		else if("afficherResultatsDate".equals(commande)){
 			if(tokenizer.countTokens() == 0)
 				gestionLigue.gestionMatch.afficherResultatDate();
 			else if(tokenizer.countTokens() == 1)
 				gestionLigue.gestionMatch.afficherResultatDate(readDate(tokenizer));
 		}
-		else if("afficherResultats".startsWith(commande)){
+		else if("afficherResultats".equals(commande)){
 			if(tokenizer.countTokens() == 0)
 				gestionLigue.gestionMatch.afficherResultatDate();
 			else if(tokenizer.countTokens() == 1)
