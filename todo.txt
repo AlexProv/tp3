@@ -2,4 +2,5 @@
 - Si possible, afficherResultats et afficherResultatsDate, ajouter le prenom des arbitres.
 - Tester avec un fichier texte (possible erreur = 95%)
 - Tester heure sous le format hh:mm:ss
-- Prendre le terrainId qui est en rapport avec l'equipe local pour mettre le terrainId dans Match
+- Prendre le terrainId qui est en rapport avec l'equipe local pour mettre le terrainId dans Match [x] regler par alex
+

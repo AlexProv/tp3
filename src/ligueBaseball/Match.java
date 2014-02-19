@@ -18,6 +18,7 @@ public class Match {
 	private PreparedStatement stmtTousResultats;
 	private PreparedStatement stmtTousResultatsDate;
 	private PreparedStatement stmtTousResultatsEquipe;
+	//private PreparedStatement stmtGetTerrainId;
 	
 	public Match(Connexion cx) throws SQLException{
 		this.cx = cx;
@@ -26,8 +27,8 @@ public class Match {
 				+ "match.equipevisiteur = e2.equipeid and e2.equipenom = ? and match.matchdate = ? and "
 				+ "match.matchheure = ?");
 		stmtAjoutMatch = cx.getConnection().prepareStatement(
-				"insert into match (matchid, equipelocal, equipevisiteur, matchdate, matchheure)"
-				+ "values (?,?,?,?,?)");
+				"insert into match (matchid, equipelocal, equipevisiteur, matchdate, matchheure, terrainid)"
+				+ "values (?,?,?,?,?,(select terrainid from equipe where equipeid = ?))");
 		stmtMaxId = cx.getConnection().prepareStatement(
 				"select max(matchid) from match");
 		stmtUpdatePoints = cx.getConnection().prepareStatement("update match set pointslocal=?, pointsvisiteur=? where matchid = ?");
@@ -51,6 +52,7 @@ public class Match {
 				+ "left outer join equipe e2 on e2.equipeid = match.equipevisiteur "
 				+ "where pointslocal is not null and (e1.equipenom = ? or e2.equipenom = ?) "
 				+ "group by pointslocal, pointsvisiteur, matchdate order by matchdate");
+		//stmtGetTerrainId = cx.getConnection().prepareStatement("select terrainid from equipe where equipeid = ?");
 	}
 	
 	public Connexion getConnexion() {
@@ -63,6 +65,7 @@ public class Match {
 		stmtAjoutMatch.setInt(3, equipeVisiteurId);
 		stmtAjoutMatch.setDate(4, matchDate);
 		stmtAjoutMatch.setTime(5, matchTime);
+		stmtAjoutMatch.setInt(6, equipeLocalId);
 		stmtAjoutMatch.executeUpdate();
 	}
 	
