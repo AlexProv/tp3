@@ -61,7 +61,7 @@ public class GestionEquipe {
 			equipe.ajoutEquipe(equipeId, terrainId, equipeNom);
 			cx.commit();
 		} catch (Exception e) {
-			// System.out.println(e);
+			System.out.println("Il y a eu une erreur avec la BD. Aucune action n'a été commise");
 			cx.rollback();
 		}
 	}
@@ -87,6 +87,7 @@ public class GestionEquipe {
 			}
 			cx.commit();
 		} catch (Exception e) {
+		    	System.out.println("Il y a eu une erreur avec la BD. Aucune action n'a été commise");
 			cx.rollback();
 		}
 	}
@@ -102,7 +103,8 @@ public class GestionEquipe {
 						+ tupleEquipe.equipenom);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+		    System.out.println("Il y a eu une erreur avec la BD. Aucune action n'a été commise");
+		    e.printStackTrace();
 		}
 	}
 }
