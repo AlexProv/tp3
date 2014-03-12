@@ -100,12 +100,16 @@ public class GestionMatch {
 	}
 	
 	/**
-	 * affiche le resulta du match pour l'equipe concerner a la console
+	 * affiche le resultat du match pour l'equipe concernee a la console
 	 * @param equipe
 	 * @throws SQLException
+	 * @throws LigueBaseballException 
 	 */
-	public void afficherResultatDate(String equipe) throws SQLException {
-		List<TupleMatch> list = match.afficherResultat(equipe);
+	public void afficherResultatDate(String nomEquipe) throws SQLException, LigueBaseballException {
+	    if(equipe.existe(nomEquipe) == -1)
+		throw new LigueBaseballException("equipe inexistante");
+	    
+	    List<TupleMatch> list = match.afficherResultat(nomEquipe);
 		System.out.println("Local-Visiteur : Liste des arbitres");
 		for (TupleMatch tupleMatch : list) {
 			System.out.println(tupleMatch.PointageLocal + "-" + tupleMatch.PointageVisiteur + " : " + tupleMatch.ListeArbitres);
