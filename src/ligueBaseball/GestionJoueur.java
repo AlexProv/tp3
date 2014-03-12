@@ -88,7 +88,7 @@ public class GestionJoueur {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
+		    System.out.println("Le joueur n'existe pas");
 		}
 	}
 

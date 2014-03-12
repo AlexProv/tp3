@@ -24,7 +24,7 @@ public class GestionArbitre {
 			arbitre.ajoutArbitre(nom, prenom);
 			cx.commit();
 		} catch (Exception e) {
-			cx.rollback();
+		    cx.rollback();
 		}
 
 	}
@@ -37,7 +37,7 @@ public class GestionArbitre {
 						+ tupleArbitre.arbitrePrenom);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+		    System.out.println("L'arbitre n'existe pas");
 		}
 
 	}

@@ -143,18 +143,18 @@ public class Main {
 		catch(SQLException e)
 		{
 			System.out.println();
-			System.out.println("oh eh... sql");
+			System.out.println("Erreur systeme!");
 		}
 		catch(LigueBaseballException e)
 		{
 			System.out.println();
-			System.out.println("oh eh... wtf");
+			System.out.println("Erreur ");
 			 afficherAide();
 		}
 		catch(Exception e)
 		{
 			System.out.println();
-			System.out.println("oh shit what");
+			System.out.println("Erreur ");
 		}
 
 	}

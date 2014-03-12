@@ -61,7 +61,6 @@ public class GestionEquipe {
 			equipe.ajoutEquipe(equipeId, terrainId, equipeNom);
 			cx.commit();
 		} catch (Exception e) {
-			// System.out.println(e);
 			cx.rollback();
 		}
 	}
@@ -102,7 +101,7 @@ public class GestionEquipe {
 						+ tupleEquipe.equipenom);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+		    System.out.println("Erreur usager: l'equipe existe pas");
 		}
 	}
 }
