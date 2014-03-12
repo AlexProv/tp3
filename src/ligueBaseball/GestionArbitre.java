@@ -3,18 +3,34 @@ package ligueBaseball;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ *  * @author Mathieu Lavoie, Alex Provencher et Vincent Gagnon
+ * classe intermedaire entre l'usager et les object qui parle a la base de donnee.
+ */
 public class GestionArbitre {
 
 	private Arbitre arbitre;
 	private Match match;
 	private Connexion cx;
 
+	/**
+	 * @param arbitre
+	 * @param match
+	 */
 	public GestionArbitre(Arbitre arbitre, Match match) {
 		this.cx = arbitre.getConnexion();
 		this.arbitre = arbitre;
 		this.match = match;
 	}
 
+	/**
+	 * fait les verification et envoie le mesage de rajouter une nouveau arbitre avec les parametres
+	 * @param nom
+	 * @param prenom
+	 * @throws SQLException
+	 * @throws LigueBaseballException
+	 * @throws Exception
+	 */
 	public void ajout(String nom, String prenom) throws SQLException,
 			LigueBaseballException, Exception {
 		try {
@@ -29,6 +45,9 @@ public class GestionArbitre {
 
 	}
 
+	/**
+	 * fait les verification et envoie le mesage de retourner un arbitre qui correspond aux parametres
+	 */
 	public void getArbitre() {
 		try {
 			List<TupleArbitre> listArbitres = arbitre.getArbitre();
@@ -42,6 +61,16 @@ public class GestionArbitre {
 
 	}
 
+	/**
+	 * fait les verification et envoie le mesage de faire arbiter un match a un arbitre
+	 * @param matchDate
+	 * @param matchHeure
+	 * @param equipeNomLocal
+	 * @param equipeNomVisiteur
+	 * @param arbitreNom
+	 * @param arbitrePrenom
+	 * @throws LigueBaseballException
+	 */
 	public void arbitrerMatch(java.sql.Date matchDate, java.sql.Time matchHeure, String equipeNomLocal, 
 			String equipeNomVisiteur, String arbitreNom, String arbitrePrenom) throws LigueBaseballException {
 		try {

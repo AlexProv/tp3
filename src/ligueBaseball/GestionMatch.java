@@ -5,8 +5,13 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.List;
 
+/**
+ *  * @author Mathieu Lavoie, Alex Provencher et Vincent Gagnon
+ * classe intermedaire entre l'usager et les object qui parle a la base de donnee.
+ */
 public class GestionMatch {
 	
+
 	private Match match;
 	private Equipe equipe;
 	private Connexion cx;
@@ -20,6 +25,14 @@ public class GestionMatch {
 		this.equipe = equipe;
 	}
 	
+	/**
+	 * fait la verification et envoie la commande pour ajouter un match
+	 * @param matchDate
+	 * @param matchHeure
+	 * @param equipeLocal
+	 * @param equipeVisiteur
+	 * @throws SQLException
+	 */
 	public void ajout(Date matchDate, Time matchHeure, String equipeLocal, String equipeVisiteur) throws SQLException{
 		try {
 			int equipeLocalId = equipe.existe(equipeLocal);
@@ -38,6 +51,16 @@ public class GestionMatch {
 		}
 	}
 	
+	/**
+	 * fait la verification et modifie le pointage d'un match
+	 * @param matchDate
+	 * @param matchHeure
+	 * @param equipeLocal
+	 * @param equipeVisiteur
+	 * @param pointsLocal
+	 * @param pointsVisiteur
+	 * @throws SQLException
+	 */
 	public void entrerPointage(Date matchDate, Time matchHeure, String equipeLocal, String equipeVisiteur, int pointsLocal, int pointsVisiteur) throws SQLException{
 		try {
 			int matchId = match.existe(matchDate, matchHeure, equipeLocal, equipeVisiteur);
@@ -51,6 +74,10 @@ public class GestionMatch {
 		}
 	}
 
+	/**
+	 * affiche le resulta du match a la console
+	 * @throws SQLException
+	 */
 	public void afficherResultatDate() throws SQLException {
 		List<TupleMatch> list = match.afficherResultat();
 		System.out.println("Local-Visiteur : Liste des arbitres");
@@ -59,6 +86,11 @@ public class GestionMatch {
 		}
 	}
 	
+	/**
+	 * affiche le resulta du match a la date en parametre a la console
+	 * @param date
+	 * @throws SQLException
+	 */
 	public void afficherResultatDate(Date date) throws SQLException {
 		List<TupleMatch> list = match.afficherResultat(date);
 		System.out.println("Local-Visiteur : Liste des arbitres");
@@ -67,6 +99,11 @@ public class GestionMatch {
 		}
 	}
 	
+	/**
+	 * affiche le resulta du match pour l'equipe concerner a la console
+	 * @param equipe
+	 * @throws SQLException
+	 */
 	public void afficherResultatDate(String equipe) throws SQLException {
 		List<TupleMatch> list = match.afficherResultat(equipe);
 		System.out.println("Local-Visiteur : Liste des arbitres");
