@@ -141,7 +141,7 @@ public class Match {
 	}
 	
 	/**
-	 * @return retorune une liste avec tout les resultas de tout les matchs
+	 * @return retourne une liste avec tout les resultas de tout les matchs
 	 * @throws SQLException
 	 */
 	public List<TupleMatch> afficherResultat() throws SQLException{

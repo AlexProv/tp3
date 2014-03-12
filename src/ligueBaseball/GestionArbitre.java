@@ -24,7 +24,7 @@ public class GestionArbitre {
 	}
 
 	/**
-	 * fait les verification et envoie le mesage de rajouter une nouveau arbitre avec les parametres
+	 * fait les verification et envoie le message de rajouter une nouveau arbitre avec les parametres
 	 * @param nom
 	 * @param prenom
 	 * @throws SQLException
@@ -46,7 +46,7 @@ public class GestionArbitre {
 	}
 
 	/**
-	 * fait les verification et envoie le mesage de retourner un arbitre qui correspond aux parametres
+	 * fait les verification et envoie le message de retourner un arbitre qui correspond aux parametres
 	 */
 	public void getArbitre() {
 		try {
@@ -62,7 +62,7 @@ public class GestionArbitre {
 	}
 
 	/**
-	 * fait les verification et envoie le mesage de faire arbiter un match a un arbitre
+	 * fait les verification et envoie le message de faire arbiter un match a un arbitre
 	 * @param matchDate
 	 * @param matchHeure
 	 * @param equipeNomLocal
@@ -84,9 +84,10 @@ public class GestionArbitre {
 				if(matchId == -1)
 					throw new LigueBaseballException("Match n'existe pas.");
 				else{
-				    	
-				    	arbitre.assignerArbitreMatch(arbitreId, matchId);
-					cx.commit();
+				    	if(arbitre.countArbitreMatch(matchId)<=3){	
+        				    arbitre.assignerArbitreMatch(arbitreId, matchId);
+        				    cx.commit();
+				    	}
 				}
 			}
 				
