@@ -12,6 +12,11 @@ public class TupleEquipe {
 	int equipeid;
 	String equipenom;
   
+	/**
+	 * structure de donnee pour les Equipes
+	 * @param equipeId
+	 * @param equipenom
+	 */
 	public TupleEquipe(int equipeId, String equipenom)
 	{
 		this.equipeid = equipeId;

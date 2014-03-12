@@ -12,6 +12,11 @@ public class TupleArbitre {
 	String arbitreNom;
 	String arbitrePrenom;
   
+	/**
+	 * structure de donnee pour les Arbitres
+	 * @param nom
+	 * @param prenom
+	 */
 	public TupleArbitre(String nom, String prenom)
 	{
 		this.arbitreNom = nom;
