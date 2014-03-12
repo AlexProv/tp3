@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * @author Mathieu Lavoie, Alex Provencher et Vincent Gagnon
+ *	classe qui fait toute les requettes concernant les arbitres a la base de donnees
+ */
 public class Arbitre {
 
 
@@ -17,7 +21,10 @@ public class Arbitre {
 	private Connexion cx;
 	
 	
-	
+	/**
+	 * Creation d'une instance. Des enonces SQL pour chaque requete sont
+	 * precompiles.
+	 */
 	public Arbitre(Connexion cx) throws SQLException{
 		this.cx = cx;
 		stmtInsertArbitre = cx.getConnection().prepareStatement
@@ -36,6 +43,12 @@ public class Arbitre {
 		return cx;
 	}
 	
+	/**
+	 * ajoute un arbitre
+	 * @param arbitreNom
+	 * @param arbitrePrenom
+	 * @throws SQLException
+	 */
 	public void ajoutArbitre(String arbitreNom,String arbitrePrenom)throws SQLException{
 		int id = maxArbitre();
 	    	stmtInsertArbitre.setInt(1, id);
@@ -44,6 +57,10 @@ public class Arbitre {
 		stmtInsertArbitre.executeUpdate();
 	}
 	
+	/**
+	 * @return retourne l'id du prochain arbitre a etre cree
+	 * @throws SQLException
+	 */
 	private int maxArbitre() throws SQLException{
 		ResultSet rset = stmtMaxId.executeQuery();
 		int arbitreId = 0;
@@ -54,6 +71,10 @@ public class Arbitre {
 		return arbitreId;
 	}
 
+	/**
+	 * @return retorune une list d'arbitre de tout les arbitres existant
+	 * @throws SQLException
+	 */
 	public List<TupleArbitre> getArbitre() throws SQLException {
 	    List<TupleArbitre> listArbitres = new ArrayList<TupleArbitre>();
 		ResultSet rset = stmtSelectAll.executeQuery();
@@ -65,6 +86,13 @@ public class Arbitre {
 		return listArbitres;
 	}
 
+	/**
+	 * 
+	 * @param nom
+	 * @param prenom
+	 * @return retourne l'id de l'arbitre qui correspond au parametre.
+	 * @throws SQLException
+	 */
 	public int existe(String nom, String prenom) throws SQLException {
 		int arbitreId = -1;
 	    stmtExisteArbitre.setString(1, nom);
@@ -77,6 +105,12 @@ public class Arbitre {
 		return arbitreId;
 	}
 	
+	
+	/**
+	 * euu fait rien
+	 * @param arbitreId
+	 * @param matchId
+	 */
 	public void assignerArbitreMatch(int arbitreId, int matchId){
 		
 	}
