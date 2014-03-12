@@ -116,7 +116,8 @@ conn.commit();
 public void rollback()
   throws SQLException
 {
-conn.rollback();
+    System.out.println("Erreur usager: vous avez commis une erreure, aucune action n'a été commise");
+    conn.rollback();
 }
 
 /**

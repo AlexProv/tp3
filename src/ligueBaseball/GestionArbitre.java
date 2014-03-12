@@ -24,7 +24,6 @@ public class GestionArbitre {
 			arbitre.ajoutArbitre(nom, prenom);
 			cx.commit();
 		} catch (Exception e) {
-		    System.out.println("Il y a eu une erreur avec la BD. Aucune action n'a été commise");
 		    cx.rollback();
 		}
 
@@ -38,8 +37,7 @@ public class GestionArbitre {
 						+ tupleArbitre.arbitrePrenom);
 			}
 		} catch (SQLException e) {
-		    System.out.println("Il y a eu une erreur avec la BD. Aucune action n'a été commise");
-		    e.printStackTrace();
+		    System.out.println("L'arbitre n'existe pas");
 		}
 
 	}
