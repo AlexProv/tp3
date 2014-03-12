@@ -2,9 +2,8 @@ package ligueBaseball;
 import java.sql.*;
 
 /**
- * La classe GestionLigueBaseball
- * @author Mathieu Lavoie, Alex Provencher et Vincent Gagnon
- *
+ *  * @author Mathieu Lavoie, Alex Provencher et Vincent Gagnon
+ * classe intermedaire entre l'usager et les object qui parle a la base de donnee.
  */
 public class GestionLigueBaseball
 {

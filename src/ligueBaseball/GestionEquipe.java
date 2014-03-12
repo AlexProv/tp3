@@ -4,9 +4,8 @@ import java.sql.*;
 import java.util.List;
 
 /**
- * 
- * @author Mathieu Lavoie, Alex Provencher et Vincent Gagnon
- * 
+ *  * @author Mathieu Lavoie, Alex Provencher et Vincent Gagnon
+ * classe intermedaire entre l'usager et les object qui parle a la base de donnee.
  */
 public class GestionEquipe {
 
@@ -93,6 +92,9 @@ public class GestionEquipe {
 	/**
  * 
  */
+	/**
+	 * fait les verification et envoie le mesage de rajouter l'equipe qui corespond aux parametres
+	 */
 	public void getEquipes() {
 		try {
 			List<TupleEquipe> listEquipes = equipe.getEquipes();

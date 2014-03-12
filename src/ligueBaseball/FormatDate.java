@@ -47,8 +47,7 @@ return formatAMJ.parse(dateString);
 }
 
 public static Time convertirTime(String timeString) throws ParseException{
-	long hhmm = formatHHMM.parse(timeString).getTime();
-	return new Time(hhmm);
+	return new Time(new SimpleDateFormat("HH:mm").parse(timeString).getTime());
 }
 
 public static String toString(Date date)

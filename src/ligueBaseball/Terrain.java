@@ -7,6 +7,7 @@ import java.sql.SQLException;
 /**
  * 
  * @author Mathieu Lavoie, Alex Provencher et Vincent Gagnon
+ * classe qui fait toute les requettes concernant les arbitres a la base de donnees
  *
  */
 public class Terrain {
@@ -58,6 +59,11 @@ public class Terrain {
 		stmtInsert.executeUpdate();
 	}
 	
+	/**
+	 * @param terrainNom
+	 * @return id du terrain qui correspond au parametre
+	 * @throws SQLException
+	 */
 	public int getTerrain(String terrainNom) throws SQLException{
 		stmtExiste.setString(1,terrainNom);
 		ResultSet rset = stmtExiste.executeQuery();
@@ -69,6 +75,10 @@ public class Terrain {
 		return terrainId;
 	}
 	
+	/**
+	 * @return retorune l'id du prochain terrain a etre cree
+	 * @throws SQLException
+	 */
 	public int maxTerrain() throws SQLException{
 		ResultSet rset = stmtMax.executeQuery();
 		int terrainId = 0;

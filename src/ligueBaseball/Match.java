@@ -8,6 +8,11 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * @author Mathieu Lavoie, Alex Provencher et Vincent Gagnon
+ * classe qui fait toute les requettes concernant les matchs a la base de donnees
+ */
 public class Match {
 	
 	private Connexion cx;
@@ -20,6 +25,13 @@ public class Match {
 	private PreparedStatement stmtTousResultatsEquipe;
 	//private PreparedStatement stmtGetTerrainId;
 	
+	/**
+	 * @param cx object de connection a la base de donnee
+	 * @throws SQLException 
+	 *
+	 * Creation d'une instance. Des enonces SQL pour chaque requete sont
+	 * precompiles.
+	 */
 	public Match(Connexion cx) throws SQLException{
 		this.cx = cx;
 		stmtExiste = cx.getConnection().prepareStatement("select match.matchid from match, "
@@ -59,6 +71,14 @@ public class Match {
 		return cx;
 	}
 	
+	/**
+	 * @param matchId 
+	 * @param equipeLocalId
+	 * @param equipeVisiteurId
+	 * @param matchDate
+	 * @param matchTime
+	 * @throws SQLException
+	 */
 	public void ajoutMatch(int matchId, int equipeLocalId, int equipeVisiteurId, Date matchDate, Time matchTime) throws SQLException{
 		stmtAjoutMatch.setInt(1, matchId);
 		stmtAjoutMatch.setInt(2, equipeLocalId);
@@ -69,6 +89,14 @@ public class Match {
 		stmtAjoutMatch.executeUpdate();
 	}
 	
+	/**
+	 * @param matchDate
+	 * @param matchHeure
+	 * @param equipeNomLocal
+	 * @param equipeNomVisiteur
+	 * @return index correspodant a l'enregistrement qui sont identique au parametre
+	 * @throws SQLException
+	 */
 	public int existe(Date matchDate, Time matchHeure, String equipeNomLocal, 
 			String equipeNomVisiteur) throws SQLException{
 		int matchId = -1;
@@ -83,6 +111,10 @@ public class Match {
 		rset.close();
 		return matchId;
 	}
+	/**
+	 * @return retorune l'id du prochain match a etre cree
+	 * @throws SQLException
+	 */
 	public int maxMatch() throws SQLException {
 		ResultSet rset = stmtMaxId.executeQuery();
 		int matchId = 0;
@@ -93,6 +125,14 @@ public class Match {
 		return matchId;
 	}
 	
+	
+	/**
+	 * change le pointage pour un matchid donner
+	 * @param matchId
+	 * @param pointsLocal
+	 * @param pointsVisiteur
+	 * @throws SQLException
+	 */
 	public void updatePointage(int matchId, int pointsLocal, int pointsVisiteur) throws SQLException{
 		stmtUpdatePoints.setInt(1, pointsLocal);
 		stmtUpdatePoints.setInt(2, pointsVisiteur);
@@ -100,6 +140,10 @@ public class Match {
 		stmtUpdatePoints.executeUpdate();
 	}
 	
+	/**
+	 * @return retorune une liste avec tout les resultas de tout les matchs
+	 * @throws SQLException
+	 */
 	public List<TupleMatch> afficherResultat() throws SQLException{
 		List<TupleMatch> list = new ArrayList<TupleMatch>();
 		ResultSet rset = stmtTousResultats.executeQuery();
@@ -109,6 +153,11 @@ public class Match {
 		return list;
 	}
 	
+	/**
+	 * @param date
+	 * @return liste de touts les match qui on ete jouer a la date en parametre
+	 * @throws SQLException
+	 */
 	public List<TupleMatch> afficherResultat(Date date) throws SQLException{
 		List<TupleMatch> list = new ArrayList<TupleMatch>();
 		stmtTousResultatsDate.setDate(1, date);
@@ -119,8 +168,13 @@ public class Match {
 		return list;
 	}
 	
+	/**
+	 * @param equipe
+	 * @return liste de touts les match qui on ete jouer a l'equipe en parametre
+	 * @throws SQLException
+	 */
 	public List<TupleMatch> afficherResultat(String equipe) throws SQLException{
-		List<TupleMatch> list = new ArrayList<TupleMatch>();
+	    	List<TupleMatch> list = new ArrayList<TupleMatch>();
 		stmtTousResultatsEquipe.setString(1, equipe);
 		stmtTousResultatsEquipe.setString(2, equipe);
 		ResultSet rset = stmtTousResultatsEquipe.executeQuery();

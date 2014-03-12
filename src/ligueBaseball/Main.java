@@ -143,20 +143,20 @@ public class Main {
 		catch(SQLException e)
 		{
 			System.out.println();
-			System.out.println("Erreur systeme!");
+			System.out.println("Erreur SQL");
 		}
 		catch(LigueBaseballException e)
 		{
-			System.out.println();
-			System.out.println("Erreur ");
-			 afficherAide();
+			System.out.println(e.getMessage());
+			
 		}
 		catch(Exception e)
 		{
-			System.out.println();
-			System.out.println("Erreur ");
+			System.out.println(e.getMessage());
+			System.out.println("Erreur 1234");
 		}
 
+		afficherAide();
 	}
 
 	/**
@@ -239,8 +239,7 @@ public class Main {
 				return new java.sql.Date(FormatDate.convertirDate(token).getTime());
 			} catch (ParseException e) {
 				throw new LigueBaseballException(
-						"Date en format YYYY-MM-DD attendue a la place  de \""
-								+ token + "\"");
+						"La date \""+ token + "\" n'est pas valide, rentrer une date en format YYYY-MM-DD a la place");
 			}
 		} else
 			throw new LigueBaseballException("Une date est attendu");

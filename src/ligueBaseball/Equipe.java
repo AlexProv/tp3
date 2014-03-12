@@ -4,6 +4,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Mathieu Lavoie, Alex Provencher et Vincent Gagnon
+ * classe qui fait toute les requettes concernant les matchs a la base de donnees
+ */
 public class Equipe {
 
 	private PreparedStatement stmtExiste;
@@ -63,6 +67,12 @@ public class Equipe {
 
 	}
 	
+	/**
+	 * ajout d'une equipe a la base de donner avec l'id et le nom en parametre
+	 * @param equipeId
+	 * @param equipeNom
+	 * @throws SQLException
+	 */
 	public void ajoutEquipe(int equipeId, String equipeNom) throws SQLException{
 		stmtInsert.setInt(1, equipeId);
 		stmtInsert.setString(2, equipeNom);
@@ -70,7 +80,11 @@ public class Equipe {
 	}
 
 	/**
-	 * Ajout d'une nouvelle equipe
+	 * Ajout d'une nouvelle equipe a la base de donner avec l'id et le nom en parametre et le terrainid
+	 * @param equipeId
+	 * @param terrainId
+	 * @param equipeNom
+	 * @throws SQLException
 	 */
 	public void ajoutEquipe(int equipeId, int terrainId, String equipeNom)
 			throws SQLException {
@@ -104,6 +118,11 @@ public class Equipe {
 		return listEquipes;
 	}
 
+	/**
+	 * @param equipeNom
+	 * @return si le joueur equipe dans l'equipe specifier
+	 * @throws SQLException
+	 */
 	public boolean existeJoueurs(String equipeNom) throws SQLException {
 		stmtExisteJoueurEquipe.setString(1, equipeNom);
 		ResultSet rset = stmtExisteJoueurEquipe.executeQuery();
@@ -112,6 +131,10 @@ public class Equipe {
 		return existe;
 	}
 
+	/**
+	 * @return retorune l'id de la prochaine equipe a etre cree
+	 * @throws SQLException
+	 */
 	public int maxJoueur() throws SQLException {
 		ResultSet rset = stmtMaxId.executeQuery();
 		int equipeId = 0;
