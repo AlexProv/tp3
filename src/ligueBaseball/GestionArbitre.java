@@ -70,9 +70,10 @@ public class GestionArbitre {
 	 * @param arbitreNom
 	 * @param arbitrePrenom
 	 * @throws LigueBaseballException
+	 * @throws SQLException 
 	 */
 	public void arbitrerMatch(java.sql.Date matchDate, java.sql.Time matchHeure, String equipeNomLocal, 
-			String equipeNomVisiteur, String arbitreNom, String arbitrePrenom) throws LigueBaseballException {
+			String equipeNomVisiteur, String arbitreNom, String arbitrePrenom) throws LigueBaseballException, SQLException {
 		try {
 			int arbitreId = arbitre.existe(arbitreNom, arbitrePrenom);
 			if(arbitreId == -1)
@@ -83,12 +84,14 @@ public class GestionArbitre {
 				if(matchId == -1)
 					throw new LigueBaseballException("Match n'existe pas.");
 				else{
-					
+				    	
+				    	arbitre.assignerArbitreMatch(arbitreId, matchId);
+					cx.commit();
 				}
 			}
 				
-		} catch (SQLException e) {
-			throw new LigueBaseballException(e.getMessage());
+		} catch (Exception e) {
+		    cx.rollback();
 		}
 	}
 

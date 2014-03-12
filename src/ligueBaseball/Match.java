@@ -54,7 +54,7 @@ public class Match {
 				"select pointslocal, pointsvisiteur, array_to_string(array_agg(arbitre.arbitrenom),',')"
 				+ " from match left outer join arbitrer on arbitrer.matchid = match.matchid "
 				+ "left outer join arbitre on arbitre.arbitreid = arbitrer.arbitreid "
-				+ "where pointslocal is not null and match.matchdate > ? "
+				+ "where pointslocal is not null and match.matchdate >= ? "
 				+ "group by pointslocal, pointsvisiteur, matchdate order by matchdate");
 		stmtTousResultatsEquipe = cx.getConnection().prepareStatement(
 				"select pointslocal, pointsvisiteur, array_to_string(array_agg(arbitre.arbitrenom),',') "

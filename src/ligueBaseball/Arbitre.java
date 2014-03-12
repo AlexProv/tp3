@@ -18,7 +18,9 @@ public class Arbitre {
 	private PreparedStatement stmtSelectAll;
 	private PreparedStatement stmtExisteArbitre;
 	private PreparedStatement stmtMaxId;
+	private PreparedStatement stmtArbitrer;
 	private Connexion cx;
+	private PreparedStatement stmtAfficherArbitrer;
 	
 	
 	/**
@@ -36,7 +38,10 @@ public class Arbitre {
 			("select arbitreID from arbitre where arbitreNom= ? and arbitrePrenom = ?");
 		stmtMaxId = cx.getConnection().prepareStatement
 			("select max(arbitreid) from arbitre");
-
+		stmtArbitrer = cx.getConnection().prepareStatement(
+				"insert into arbitrer (arbitreID, matchId) values (?,?)");
+		stmtAfficherArbitrer = cx.getConnection().prepareStatement(
+			"select * from arbitrer where matchId= ?");
 	}
 	
 	public Connexion getConnexion() {
@@ -107,12 +112,15 @@ public class Arbitre {
 	
 	
 	/**
-	 * euu fait rien
+	 * assigne un arbitre à un match
 	 * @param arbitreId
 	 * @param matchId
+	 * @throws SQLException 
 	 */
-	public void assignerArbitreMatch(int arbitreId, int matchId){
-		
+	public void assignerArbitreMatch(int arbitreId, int matchId) throws SQLException{
+		stmtArbitrer.setInt(1, arbitreId);
+		stmtArbitrer.setInt(2, matchId);
+		stmtArbitrer.execute();
 	}
 	
 }

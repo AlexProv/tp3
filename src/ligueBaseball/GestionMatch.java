@@ -75,11 +75,14 @@ public class GestionMatch {
 	}
 
 	/**
-	 * affiche le resulta du match a la console
+	 * affiche le resultat du match a la console
 	 * @throws SQLException
+	 * @throws LigueBaseballException 
 	 */
-	public void afficherResultatDate() throws SQLException {
+	public void afficherResultatDate() throws SQLException, LigueBaseballException {
 		List<TupleMatch> list = match.afficherResultat();
+		//if(list.size()==0)
+		    
 		System.out.println("Local-Visiteur : Liste des arbitres");
 		for (TupleMatch tupleMatch : list) {
 			System.out.println(tupleMatch.PointageLocal + "-" + tupleMatch.PointageVisiteur + " : " + tupleMatch.ListeArbitres);
@@ -87,12 +90,17 @@ public class GestionMatch {
 	}
 	
 	/**
-	 * affiche le resulta du match a la date en parametre a la console
+	 * affiche le resultat du match a la date en parametre a la console
 	 * @param date
 	 * @throws SQLException
+	 * @throws LigueBaseballException 
 	 */
-	public void afficherResultatDate(Date date) throws SQLException {
+	public void afficherResultatDate(Date date) throws SQLException, LigueBaseballException {
 		List<TupleMatch> list = match.afficherResultat(date);
+		if(list.size()==0){
+		    throw new LigueBaseballException("Il n'y a aucun match a afficher");
+		}
+		
 		System.out.println("Local-Visiteur : Liste des arbitres");
 		for (TupleMatch tupleMatch : list) {
 			System.out.println(tupleMatch.PointageLocal + "-" + tupleMatch.PointageVisiteur + " : " + tupleMatch.ListeArbitres);
@@ -110,7 +118,10 @@ public class GestionMatch {
 		throw new LigueBaseballException("equipe inexistante");
 	    
 	    List<TupleMatch> list = match.afficherResultat(nomEquipe);
-		System.out.println("Local-Visiteur : Liste des arbitres");
+	    if(list.size()==0){
+		throw new LigueBaseballException("Il n'y a aucun match a afficher");
+	    }
+	    System.out.println("Local-Visiteur : Liste des arbitres");
 		for (TupleMatch tupleMatch : list) {
 			System.out.println(tupleMatch.PointageLocal + "-" + tupleMatch.PointageVisiteur + " : " + tupleMatch.ListeArbitres);
 		}
