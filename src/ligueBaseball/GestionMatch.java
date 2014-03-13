@@ -43,6 +43,12 @@ public class GestionMatch {
 			if (equipeVisiteurId == -1)
 				throw new LigueBaseballException("Equipe visiteur n'existe pas: "
 						+ equipeVisiteur);
+			
+			int matchID = match.existe(matchDate, matchHeure, equipeLocal, equipeVisiteur); 
+			if (matchID > -1)
+			    throw new LigueBaseballException("Match existe deja: ");
+
+			
 			int matchId = match.maxMatch();
 			match.ajoutMatch(matchId, equipeLocalId, equipeVisiteurId, matchDate, matchHeure);
 			cx.commit();
